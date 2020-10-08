@@ -16,10 +16,16 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from api.resources import SpellResource
+from api.resources import EnemyResource
+from api.resources import ColorResource
 
 spell_resource = SpellResource()
+enemy_resource = EnemyResource()
+color_resource = ColorResource()
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^api/', include(spell_resource.urls)),
+    url(r'^api/', include(enemy_resource.urls)),
+    url(r'^api/', include(color_resource.urls)),
 ]
