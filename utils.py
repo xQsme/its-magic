@@ -12,6 +12,7 @@ def jwt_response_payload_handler(token, user=None, request=None):
         'user': {
             'id':user.id,
             'username':user.username,
+			'email': user.email,
             'role': "admin" if user.is_staff else "preb"
         }
     }
