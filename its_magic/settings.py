@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
+import datetime
+import utils
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -19,8 +21,40 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
+
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '&ea_)f397$2771%x2%jt5hayrkwn13l4+d&n(zw^72+6d9d!2y'
+
+# Security: JSONWebTokenAuthentication
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
+}
+
+JWT_AUTH = {
+    'JWT_SECRET_KEY': SECRET_KEY,
+    'JWT_RESPONSE_PAYLOAD_HANDLER':
+    'utils.jwt_response_payload_handler',
+}
+
+def jwt_response_payload_handler(token, user=None, request=None):
+    print("hashduiashdiuashnidsnhaiudhniasdisad");
+    """
+    Custom response payload handler.
+    This function controls the custom payload after login or token refresh. This data is returned through the web API.
+    """
+
+    return {
+        'token': token,
+        'user': "ola",
+        'name':"bob"
+    }
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -37,7 +71,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'api'
+    'tastypie',
+    'api',
 ]
 
 MIDDLEWARE = [

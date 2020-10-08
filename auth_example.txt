@@ -1,0 +1,8 @@
+//Get token
+curl -X POST -H "Content-Type: application/json" -d '{"username":"admin","password":"password123"}' http://localhost:8000/api-token-auth/
+
+//User token
+curl -H "Authorization: JWT <your_token>" http://localhost:8000/protected-url/
+
+//Refresh token
+curl -X POST -H "Content-Type: application/json" -d '{"token":"<EXISTING_TOKEN>"}' http://localhost:8000/api-token-refresh/
