@@ -79,8 +79,14 @@ import type { SpellModel } from '../../utils/models';
 
 <div class="paper-container">
     <div class="preview-container">
-        <img class="spell" src={spells[(currentSpell+1)%spells.length].image} alt="next-spell" />
-        <img class="current-spell" src={spells[currentSpell%spells.length].image} alt="spell" />
+        <div class="spell-container">
+            <span>Next Spell:</span>
+            <img class="spell" src={spells[(currentSpell+1)%spells.length].image} alt="next-spell" />
+        </div>
+        <div class="spell-container">
+            <span>Current Spell:</span>
+            <img class="current-spell" src={spells[currentSpell%spells.length].image} alt="spell" />
+        </div>
         <div class="colors">
             {#each colors as color, i}
                 <div class="color" class:active={currentColor === Number(i)} style="background-color: {color};" on:click={() => currentColor = Number(i)}/>
@@ -101,26 +107,39 @@ import type { SpellModel } from '../../utils/models';
         height: 100%;
     }
     .preview-container{
-        position: relative;
         background-color: #303030;
         padding: 20px;
         margin-bottom: 15px;
-        display: flex;
-        align-items: center;
         flex: 1;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); 
+        grid-column-gap: var(--spacing-l);
+        grid-row-gap: var(--spacing-l);
+        width: 100%;
+        align-items: flex-start;
+
+        .spell-container{
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            align-items: center;
+        }
 
         .spell{
-            max-height: 50px;
+            max-height: 100px;
+            margin: auto;
         }
 
         .current-spell{
             max-height: 250px;
+            margin: auto;
         }
     }
     .canvas-container{
         padding: 20px;
         background-color: #303030;
-        flex: 2;
+        flex: 3;
+        min-height: 0; /* new */
 
         #paper{
             width: 100%;
@@ -128,10 +147,9 @@ import type { SpellModel } from '../../utils/models';
         }
     }
     .colors{
-        position: absolute;
+        position: relative;
         display: flex;
-        top: 20px;
-        right: 20px;
+        justify-content: flex-end;
     }
     .color{
         width: 20px;
