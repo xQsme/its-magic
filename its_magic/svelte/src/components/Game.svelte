@@ -205,7 +205,7 @@
         // });
 
         //Podem dar mute na tab do browser, nao comentem isto xD
-        playSound('tuturu');
+        playSound('nggyu');
     }
 
     function playSound(file) {
