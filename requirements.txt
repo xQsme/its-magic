@@ -1,0 +1,5 @@
+Django
+Pillow
+django-tastypie
+django-spa
+djangorestframework-jwt
