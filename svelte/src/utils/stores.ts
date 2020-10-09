@@ -1,13 +1,7 @@
 import { writable } from 'svelte/store';
+import type { AuthModel } from './models';
 
-interface Auth {
-	email:string,
-	username:string,
-	role:string,
-	token:string,
-}
-
-let authData:Auth;
+let authData:AuthModel;
 
 try{
 	authData = JSON.parse(localStorage.getItem("auth"));

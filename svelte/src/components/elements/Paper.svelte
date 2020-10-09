@@ -3,13 +3,12 @@
     import paper from 'paper';
 
     export let currentColor:string;
-    let spellCooldown:number = 250; //250
+    export let colors:string[];
+    let spellCooldown:number = 250;
 
 
     onMount(():void => {
-        //paper.install(window);
         paper.setup("paper");
-        //draw();
 
         let myPath:any;
         let disable:boolean = false;
@@ -22,7 +21,7 @@
             } else {
                 if (!disable){
                     myPath = new paper.Path({
-                        strokeColor: currentColor,
+                        strokeColor: colors[currentColor%colors.length],
                         strokeWidth: 20,
                         strokeCap: 'round'
                     });
@@ -50,21 +49,6 @@
         paper.view.draw();
     });
 
-    // function draw() {
-    //     const path = new paper.Path.Circle({
-    //         center: [80, 50],
-    //         radius: 35,
-    //         fillColor: "red",
-    //     });
-
-    //     const secondPath = new paper.Path.Circle({
-    //         center: [120, 50],
-    //         radius: 35,
-    //         fillColor: "#00FF00",
-    //     });
-    // }
-
-    export let showPaper:boolean;
     export let rMousePress:boolean;
 
     let started:boolean = false;
@@ -89,21 +73,40 @@
 
 </script>
 
-<canvas id="paper" class:show-paper={showPaper} on:mousedown={startDrawing} on:mousemove={keepDrawing} on:mouseup={finishDrawing} /> 
+<div class="paper-container">
+    <div class="colors">
+        {#each colors as color, i}
+            <div class="color" class:active={currentColor === Number(i)} style="background-color: {color};" on:click={() => currentColor = Number(i)}/>
+        {/each}
+    </div>
+    <canvas id="paper" on:mousedown={startDrawing} on:mousemove={keepDrawing} on:mouseup={finishDrawing} />
+</div>
 
 <style type="text/scss">
+    .paper-container{
+        background-color: #303030;
+        padding: 20px;
+        flex: 3 1 auto;
+        margin: 0 15px;
+    }
     #paper{
         width: 100%;
         height: 100%;
-        background: transparent;
-        position: fixed;
-        visibility: hidden;
-        /* background-color: white;
-        width: 50%;
-        height: 50%;
-        transform: translate(50%, 50%); */
     }
-    .show-paper{
-        visibility: visible !important;
+    .colors{
+        display: flex;
+        width: 100%;
+        justify-content: right;
+        align-items: center;
+    }
+    .color{
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        margin: 5px;
+    }
+    .active{
+        box-shadow: 0px 0px 10px #FFF;
+        
     }
 </style>

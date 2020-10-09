@@ -39,7 +39,6 @@
 	})
 	
 	router.start();
-	console.log(get(auth));
 
 	function authMiddleware () {
 		if(get(auth).role === null) {
@@ -98,6 +97,7 @@
 			display: flex;
 			align-items: center;
 			background-color: #303030;
+			flex: 0 0 auto;
 
 			.logo{
 				display: flex;
@@ -140,7 +140,7 @@
 		.main-container{
 			display: flex;
 			width: 100%;
-			height: 100%;
+        	height: calc(100% - 55px);
 		}
 	}
 </style>
