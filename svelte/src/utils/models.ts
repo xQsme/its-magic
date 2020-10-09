@@ -11,3 +11,8 @@ export interface EnemyModel{
     time:number,
     image:string,
 }
+
+export interface SpellModel{
+    name:string,
+    image:string,
+}

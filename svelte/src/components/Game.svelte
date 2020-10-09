@@ -5,12 +5,18 @@
     import Player from './elements/Player.svelte';
     import Enemy from './elements/Enemy.svelte';
 
-    import type { EnemyModel } from '../utils/models';
+    import type { EnemyModel, SpellModel } from '../utils/models';
 
     let rMousePress:boolean = false;
 
     const sounds:Howl[] = [];
-    const spells:any[] = [];
+    const spells:SpellModel[] = [
+        {name: '1', image: 'assets/images/spell1.png'},
+        {name: '2', image: 'assets/images/spell2.png'},
+        {name: '3', image: 'assets/images/spell3.png'},
+        {name: '4', image: 'assets/images/spell4.png'},
+        {name: '5', image: 'assets/images/spell5.png'},
+    ];
     const enemies:EnemyModel[] = [
         {name: 'Goblin', hp: 200, time: 20, image: 'assets/images/goblin.png'},
         {name: 'Dwarf', hp: 350, time: 30, image: 'assets/images/dwarf.png'},
@@ -60,7 +66,7 @@
 </script>
 <div id="game">
     <Player bind:currentEnemy bind:currentSpell playSound={playSound} length={enemies.length}/>
-    <Paper bind:rMousePress bind:currentColor colors={colors} />
+    <Paper bind:rMousePress bind:currentColor colors={colors} bind:currentSpell spells={spells} />
     <Enemy enemy={enemies[currentEnemy%enemies.length]}/>
 </div>
 
