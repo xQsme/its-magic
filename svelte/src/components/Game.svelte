@@ -44,7 +44,7 @@
     }
 
     onMount(():void => {
-        playSound('nggyu');
+        //playSound('nggyu');
     });
 
     onDestroy(():void => {
