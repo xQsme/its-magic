@@ -24,11 +24,11 @@
   },
   "dependencies": {
     "acorn": "^6.4.2",
+    "axios": "^0.20.0",
     "howler": "^2.2.0",
     "node-sass": "^4.14.1",
     "page": "^1.11.6",
     "paper": "^0.12.11",
-    "pixi.js": "^5.3.3",
     "sirv-cli": "^1.0.0"
   }
 }

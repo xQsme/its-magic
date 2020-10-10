@@ -62,6 +62,10 @@
         });
     });
 
+    function special() {
+        player.currentMana=0;
+    }
+
     function submitSpell(){
         if(enemies[currentEnemy%enemies.length].currentHP <= 100) {
             enemies[currentEnemy%enemies.length].currentHP = 0;
@@ -70,6 +74,11 @@
             }, 500);
         } else {
             enemies[currentEnemy%enemies.length].currentHP -= 100;
+        }
+        if(player.currentMana <= player.mana - 10) {
+            player.currentMana += 10;
+        } else {
+            player.currentMana = player.mana;
         }
     }
 
@@ -86,7 +95,7 @@
 </script>
 <div id="game">
     <Player player={player}/>
-    <Paper bind:rMousePress bind:currentColor colors={colors} bind:currentSpell spells={spells} submitSpell={submitSpell} />
+    <Paper bind:rMousePress bind:currentColor colors={colors} bind:currentSpell spells={spells} submitSpell={submitSpell} player={player} special={special} />
     <Enemy enemy={enemies[currentEnemy%enemies.length]}/>
 </div>
 
