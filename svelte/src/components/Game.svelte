@@ -1,4 +1,5 @@
 <script lang="ts">
+    import axios from "axios";
     import { onMount, onDestroy } from 'svelte';
     import {Howl} from 'howler';
     import Paper from './elements/Paper.svelte';
@@ -62,7 +63,19 @@
         });
     });
 
-    function submitSpell(){
+    function submitSpell(spell){
+        axios.post('/user', {
+            firstName: 'Fred',
+            lastName: 'Flintstone'
+        })
+        .then(function (response) {
+            console.log(response);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });        
+        
+
         if(enemies[currentEnemy%enemies.length].currentHP <= 100) {
             enemies[currentEnemy%enemies.length].currentHP = 0;
             setTimeout(() => {

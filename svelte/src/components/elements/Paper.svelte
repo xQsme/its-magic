@@ -42,11 +42,14 @@
         paper.view.onMouseUp = function(event:any):void {
             if(!wasDisabled) {
                 disable = true;
+                var canvas = document.getElementById("paper")
+                var img = canvas.toDataURL();
+                submitSpell(img);
+
                 setTimeout(() => {
                     paper.project.activeLayer.removeChildren();
-                    disable = false;
+                    disable = false;    
                     currentSpell++;
-                    submitSpell();
                 }, spellCooldown);
             }
         }
