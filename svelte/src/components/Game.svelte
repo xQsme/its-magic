@@ -7,7 +7,7 @@
     import Enemy from './elements/Enemy.svelte';
 
     import type { EnemyModel, SpellModel, PlayerModel } from '../utils/models';
-
+    
     let rMousePress:boolean = false;
 
     const sounds:Howl[] = [];
@@ -64,9 +64,9 @@
     });
 
     function submitSpell(spell){
-        axios.post('/user', {
-            firstName: 'Fred',
-            lastName: 'Flintstone'
+        axios.post('/spell', {
+            spell: spell,
+            user: localStorage.getItem('auth')
         })
         .then(function (response) {
             console.log(response);
