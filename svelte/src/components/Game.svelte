@@ -5,7 +5,7 @@
     import Player from './elements/Player.svelte';
     import Enemy from './elements/Enemy.svelte';
 
-    import type { EnemyModel, SpellModel } from '../utils/models';
+    import type { EnemyModel, SpellModel, PlayerModel } from '../utils/models';
 
     let rMousePress:boolean = false;
 
@@ -18,17 +18,26 @@
         {name: '5', image: 'assets/images/spell5.png'},
     ];
     const enemies:EnemyModel[] = [
-        {name: 'Goblin', hp: 200, time: 20, image: 'assets/images/goblin.png'},
-        {name: 'Dwarf', hp: 350, time: 30, image: 'assets/images/dwarf.png'},
-        {name: 'Dragon', hp: 500, time: 40, image: 'assets/images/dragon.png'},
-        {name: 'Gilgamesh', hp: 750, time: 50, image: 'assets/images/Almighty_Gilgamesh.gif'},
-        {name: 'Altes Besta', hp: 1000, time: 60, image: 'assets/images/Altes_Besta.png'},
+        {name: 'Goblin', hp: 200, currentHP: 200, time: 20, image: 'assets/images/goblin.png'},
+        {name: 'Dwarf', hp: 350, currentHP: 350, time: 30, image: 'assets/images/dwarf.png'},
+        {name: 'Dragon', hp: 500, currentHP: 500, time: 40, image: 'assets/images/dragon.png'},
+        {name: 'Gilgamesh', hp: 750, currentHP: 750, time: 50, image: 'assets/images/Almighty_Gilgamesh.gif'},
+        {name: 'Altes Besta', hp: 1000, currentHP: 1000, time: 60, image: 'assets/images/Altes_Besta.png'},
     ];
     const colors:string[] = ['red', 'white', 'green', 'blue', 'yellow'];
+    const player:PlayerModel = {name: 'Altes Besta', hp: 1000, currentHP: 1000, mana: 100, currentMana: 0};
 
     export let currentEnemy:number = 0;
     export let currentSpell:number = 0;
     export let currentColor:number = 0;
+
+    function changeEnemy():void {
+        enemies[currentEnemy%enemies.length].currentHP=enemies[currentEnemy%enemies.length].hp;
+        currentEnemy++;
+        if(currentEnemy%enemies.length === 4) {
+            playSound('tuturu');
+        }
+    }
 
     //Disable right click
     if(document.addEventListener) {
@@ -53,6 +62,17 @@
         });
     });
 
+    function submitSpell(){
+        if(enemies[currentEnemy%enemies.length].currentHP <= 100) {
+            enemies[currentEnemy%enemies.length].currentHP = 0;
+            setTimeout(() => {
+                changeEnemy();
+            }, 500);
+        } else {
+            enemies[currentEnemy%enemies.length].currentHP -= 100;
+        }
+    }
+
     function playSound(file) {
         var sound:any = new Howl({
             src: ['assets/sounds/' + file + '.mp3']
@@ -65,8 +85,8 @@
     }
 </script>
 <div id="game">
-    <Player bind:currentEnemy bind:currentSpell playSound={playSound} length={enemies.length}/>
-    <Paper bind:rMousePress bind:currentColor colors={colors} bind:currentSpell spells={spells} />
+    <Player player={player}/>
+    <Paper bind:rMousePress bind:currentColor colors={colors} bind:currentSpell spells={spells} submitSpell={submitSpell} />
     <Enemy enemy={enemies[currentEnemy%enemies.length]}/>
 </div>
 

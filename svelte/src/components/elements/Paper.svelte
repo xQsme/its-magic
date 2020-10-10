@@ -1,14 +1,14 @@
 <script lang="ts">
     import { onMount } from 'svelte';
     import paper from 'paper';
-import type { SpellModel } from '../../utils/models';
+    import type { SpellModel } from '../../utils/models';
 
     export let currentColor:number;
     export let currentSpell:number;
     export let colors:string[];
     export let spells:SpellModel[];
     let spellCooldown:number = 250;
-
+    export let submitSpell:Function;
 
     onMount(():void => {
         paper.setup("paper");
@@ -46,6 +46,7 @@ import type { SpellModel } from '../../utils/models';
                     paper.project.activeLayer.removeChildren();
                     disable = false;
                     currentSpell++;
+                    submitSpell();
                 }, spellCooldown);
             }
         }
