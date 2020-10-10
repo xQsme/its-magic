@@ -8,6 +8,7 @@
         <div class="health">
             <span>HP: {enemy.currentHP}/{enemy.hp}</span>
             <div class="progress-container">
+                <div class="progress-placeholder" />
                 <div class="progress" style="width: {enemy.currentHP/enemy.hp*100}%;" />
                 <span class="progress-text">{(enemy.currentHP/enemy.hp*100).toFixed(2)}%</span>
             </div>
@@ -15,6 +16,7 @@
         <div class="mana">
             <span>MP: {enemy.time}/{enemy.time}</span>
             <div class="progress-container">
+                <div class="progress-placeholder" />
                 <div class="progress" style="width: {enemy.time/enemy.time*100}%;" />
                 <span class="progress-text">{(enemy.time/enemy.time*100).toFixed(2)}%</span>
             </div>
@@ -89,7 +91,7 @@
             height: 100%;  
             
             .enemy{
-                max-width: 25vw;
+                max-width: 20vw;
             }
         }
     }

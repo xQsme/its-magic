@@ -92,7 +92,7 @@
             height: 100%;  
             
             .player{
-                max-width: 25vw;
+                max-width: 20vw;
             }
         }
     }
