@@ -3,3 +3,5 @@ Pillow
 django-tastypie
 django-spa
 djangorestframework-jwt
+djangorestframework
+whitenoise
