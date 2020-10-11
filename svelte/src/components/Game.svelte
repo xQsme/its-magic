@@ -71,17 +71,30 @@
     }
 
     function submitSpell(spell){
-        axios.post('/spell', {
-            spell: spell,
-            user: localStorage.getItem('auth')
-        })
-        .then(function (response) {
+        axios({
+            method: 'put',
+            url: '/api/users/', //+ this.$root.$data['loggedUser'].id,
+            headers: {
+                'Accept' : 'application/json',
+                'Content-Type' : 'application/json',
+                'Authorization': 'Bearer ' + this.$root.$data['accessToken']
+            },
+            data: {
+                    spell: spell,
+                    user: localStorage.getItem('auth')
+            }
+        }).then(response=>{
             console.log(response);
+            this.editError = false;
+            this.errors = [];
+            this.$root.$data['loggedUser'] = response.data.data;
+            alert('O utilizador foi editado com sucesso');
         })
-        .catch(function (error) {
+        .catch(error=>{
             console.log(error);
-        });        
-        
+            this.editError = true;
+            this.errors = error.response.data.errors;
+        });       
 
         enemies[currentEnemy%enemies.length].currentHP -= 100;
         if(enemies[currentEnemy%enemies.length].currentHP <= 0) {
