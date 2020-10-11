@@ -12,7 +12,6 @@ export interface EnemyModel{
     mana:number,
     currentMana:number,
     damage:number,
-    time:number,
     image:string,
 }
 

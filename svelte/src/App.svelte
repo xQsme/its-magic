@@ -6,9 +6,11 @@
 	import Spells from './components/Spells.svelte';
 	import Colors from './components/Colors.svelte';
 	import router from 'page';
-	import { auth } from './utils/stores.js';
+	import { auth } from './utils/stores';
 	import { beforeUpdate } from 'svelte';
 	import { get } from 'svelte/store';
+	import { setupReqRes } from './utils/req';
+	setupReqRes();
 	let role = get(auth).role;
 	export let page;
 	export let params;

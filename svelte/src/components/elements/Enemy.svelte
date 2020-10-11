@@ -5,16 +5,19 @@
     export let enemy:EnemyModel;
     export let dealDamageToPlayer:Function;
     let interval;
+    export let started:boolean;
 
     onMount(():void => {
         interval = setInterval(enemyMana, 200);
     });
 
     function enemyMana(){
-        enemy.currentMana++;
-        if(enemy.currentMana >= enemy.mana) {
-            enemy.currentMana = 0;
-            dealDamageToPlayer();
+        if(started) {
+            enemy.currentMana++;
+            if(enemy.currentMana >= enemy.mana) {
+                enemy.currentMana = 0;
+                dealDamageToPlayer();
+            }
         }
     }
 
