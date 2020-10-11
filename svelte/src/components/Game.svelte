@@ -13,6 +13,9 @@
     let changing:boolean = false;
     export let started:boolean = false;
     export let lost:boolean = false;
+    export let currentEnemy:number = 0;
+    export let currentSpell:number = 0;
+    export let currentColor:number = 0;
 
     const sounds:Howl[] = [];
     const spells:SpellModel[] = [
@@ -22,15 +25,10 @@
         {name: '4', image: 'assets/images/spell4.png'},
         {name: '5', image: 'assets/images/spell5.png'},
     ];
-    let enemies:EnemyModel[] = [
-        {name: 'Goblin', hp: 200, currentHP: 200, mana: 40, currentMana: 0, damage: 50, image: 'assets/images/goblin.png'},
-        {name: 'Dwarf', hp: 350, currentHP: 350, mana: 40, currentMana: 0, damage: 100, image: 'assets/images/dwarf.png'},
-        {name: 'Dragon', hp: 500, currentHP: 500, mana: 60, currentMana: 0, damage: 150, image: 'assets/images/dragon.png'},
-        {name: 'Gilgamesh', hp: 750, currentHP: 750, mana: 75, currentMana: 0, damage: 250, image: 'assets/images/Almighty_Gilgamesh.gif'},
-        {name: 'Altes Besta', hp: 1000, currentHP: 1000, mana: 80, currentMana: 0, damage: 350, image: 'assets/images/Altes_Besta.png'},
-    ];
+    let enemies:EnemyModel[] = [];
     const colors:string[] = ['red', 'white', 'green', 'blue', 'yellow'];
-    let player:PlayerModel = {name: 'Altes Besta', hp: 1000, currentHP: 1000, mana: 100, currentMana: 0};
+    let player:PlayerModel;
+    restartGame();
 
     function restartGame() {
         enemies = [
@@ -38,17 +36,13 @@
             {name: 'Dwarf', hp: 350, currentHP: 350, mana: 40, currentMana: 0, damage: 100, image: 'assets/images/dwarf.png'},
             {name: 'Dragon', hp: 500, currentHP: 500, mana: 60, currentMana: 0, damage: 150, image: 'assets/images/dragon.png'},
             {name: 'Gilgamesh', hp: 750, currentHP: 750, mana: 75, currentMana: 0, damage: 250, image: 'assets/images/Almighty_Gilgamesh.gif'},
-            {name: 'Altes Besta', hp: 1000, currentHP: 1000, mana: 80, currentMana: 0, damage: 350, image: 'assets/images/Altes_Besta.png'},
+            {name: 'Altes Besta', hp: 1000, currentHP: 1000, mana: 80, currentMana: 0, damage: 9991, image: 'assets/images/Altes_Besta.png'},
         ];
         player = {name: 'Altes Besta', hp: 1000, currentHP: 1000, mana: 100, currentMana: 0};
         currentColor=0;
         currentEnemy=0;
         currentSpell=0;
     }
-
-    export let currentEnemy:number = 0;
-    export let currentSpell:number = 0;
-    export let currentColor:number = 0;
 
     function changeEnemy():void {
         enemies[currentEnemy%enemies.length].currentHP=enemies[currentEnemy%enemies.length].hp;
