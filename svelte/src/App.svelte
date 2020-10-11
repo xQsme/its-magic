@@ -6,13 +6,15 @@
 	import Spells from './components/Spells.svelte';
 	import Colors from './components/Colors.svelte';
 	import router from 'page';
-	import { auth } from './utils/stores.js';
+	import { auth } from './utils/stores';
 	import { beforeUpdate } from 'svelte';
 	import { get } from 'svelte/store';
+	import { setupReqRes } from './utils/req';
+	setupReqRes();
+
+	let role = get(auth) ? get(auth).role : null;
 	export let page;
 	export let params;
-	
-	let role;
 
 	router('/login', () => page = Login);
 	router('/register', () => page = Register);

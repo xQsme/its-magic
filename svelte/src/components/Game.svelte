@@ -7,8 +7,12 @@
     import Enemy from './elements/Enemy.svelte';
 
     import type { EnemyModel, SpellModel, PlayerModel } from '../utils/models';
+    import { url } from '../utils/server';
     
     let rMousePress:boolean = false;
+    let changing:boolean = false;
+    export let started:boolean = false;
+    export let lost:boolean = false;
 
     const sounds:Howl[] = [];
     const spells:SpellModel[] = [
@@ -18,15 +22,29 @@
         {name: '4', image: 'assets/images/spell4.png'},
         {name: '5', image: 'assets/images/spell5.png'},
     ];
-    const enemies:EnemyModel[] = [
-        {name: 'Goblin', hp: 200, currentHP: 200, mana: 40, currentMana: 0, damage: 50, time: 20, image: 'assets/images/goblin.png'},
-        {name: 'Dwarf', hp: 350, currentHP: 350, mana: 40, currentMana: 0, damage: 100, time: 30, image: 'assets/images/dwarf.png'},
-        {name: 'Dragon', hp: 500, currentHP: 500, mana: 60, currentMana: 0, damage: 150, time: 40, image: 'assets/images/dragon.png'},
-        {name: 'Gilgamesh', hp: 750, currentHP: 750, mana: 75, currentMana: 0, damage: 250, time: 50, image: 'assets/images/Almighty_Gilgamesh.gif'},
-        {name: 'Altes Besta', hp: 1000, currentHP: 1000, mana: 80, currentMana: 0, damage: 350, time: 60, image: 'assets/images/Altes_Besta.png'},
+    let enemies:EnemyModel[] = [
+        {name: 'Goblin', hp: 200, currentHP: 200, mana: 40, currentMana: 0, damage: 50, image: 'assets/images/goblin.png'},
+        {name: 'Dwarf', hp: 350, currentHP: 350, mana: 40, currentMana: 0, damage: 100, image: 'assets/images/dwarf.png'},
+        {name: 'Dragon', hp: 500, currentHP: 500, mana: 60, currentMana: 0, damage: 150, image: 'assets/images/dragon.png'},
+        {name: 'Gilgamesh', hp: 750, currentHP: 750, mana: 75, currentMana: 0, damage: 250, image: 'assets/images/Almighty_Gilgamesh.gif'},
+        {name: 'Altes Besta', hp: 1000, currentHP: 1000, mana: 80, currentMana: 0, damage: 350, image: 'assets/images/Altes_Besta.png'},
     ];
     const colors:string[] = ['red', 'white', 'green', 'blue', 'yellow'];
-    const player:PlayerModel = {name: 'Altes Besta', hp: 1000, currentHP: 1000, mana: 100, currentMana: 0};
+    let player:PlayerModel = {name: 'Altes Besta', hp: 1000, currentHP: 1000, mana: 100, currentMana: 0};
+
+    function restartGame() {
+        enemies = [
+            {name: 'Goblin', hp: 200, currentHP: 200, mana: 40, currentMana: 0, damage: 50, image: 'assets/images/goblin.png'},
+            {name: 'Dwarf', hp: 350, currentHP: 350, mana: 40, currentMana: 0, damage: 100, image: 'assets/images/dwarf.png'},
+            {name: 'Dragon', hp: 500, currentHP: 500, mana: 60, currentMana: 0, damage: 150, image: 'assets/images/dragon.png'},
+            {name: 'Gilgamesh', hp: 750, currentHP: 750, mana: 75, currentMana: 0, damage: 250, image: 'assets/images/Almighty_Gilgamesh.gif'},
+            {name: 'Altes Besta', hp: 1000, currentHP: 1000, mana: 80, currentMana: 0, damage: 350, image: 'assets/images/Altes_Besta.png'},
+        ];
+        player = {name: 'Altes Besta', hp: 1000, currentHP: 1000, mana: 100, currentMana: 0};
+        currentColor=0;
+        currentEnemy=0;
+        currentSpell=0;
+    }
 
     export let currentEnemy:number = 0;
     export let currentSpell:number = 0;
@@ -65,42 +83,39 @@
 
     function dealDamageToPlayer() {
         player.currentHP -= enemies[currentEnemy%enemies.length].damage;
-        if(player.currentHP < 0) {
+        if(player.currentHP <= 0) {
             player.currentHP = 0;
+            started=false;
+            lost=true;
         }
     }
 
     function submitSpell(spell){
         axios({
-            method: 'put',
-            url: '/api/users/', //+ this.$root.$data['loggedUser'].id,
+            method: 'post',
+            url: url + '/spell',
             headers: {
-                'Accept' : 'application/json',
                 'Content-Type' : 'application/json',
-                'Authorization': 'Bearer ' + this.$root.$data['accessToken']
             },
             data: {
-                    spell: spell,
-                    user: localStorage.getItem('auth')
+                spell: spell
             }
         }).then(response=>{
             console.log(response);
-            this.editError = false;
-            this.errors = [];
-            this.$root.$data['loggedUser'] = response.data.data;
-            alert('O utilizador foi editado com sucesso');
+            
         })
         .catch(error=>{
             console.log(error);
-            this.editError = true;
-            this.errors = error.response.data.errors;
+            
         });       
 
         enemies[currentEnemy%enemies.length].currentHP -= 100;
         if(enemies[currentEnemy%enemies.length].currentHP <= 0) {
             enemies[currentEnemy%enemies.length].currentHP = 0;
+            changing = true;
             setTimeout(() => {
                 changeEnemy();
+                changing=false;
             }, 500);
         }
         player.currentMana += 10;
@@ -133,8 +148,8 @@
 </script>
 <div id="game">
     <Player player={player}/>
-    <Paper bind:rMousePress bind:currentColor colors={colors} bind:currentSpell spells={spells} submitSpell={submitSpell} player={player} special={special} />
-    <Enemy enemy={enemies[currentEnemy%enemies.length]} dealDamageToPlayer={dealDamageToPlayer}/>
+    <Paper bind:rMousePress bind:currentColor colors={colors} bind:currentSpell spells={spells} submitSpell={submitSpell} player={player} special={special} changing={changing} bind:started lost={lost} restartGame={restartGame} />
+    <Enemy enemy={enemies[currentEnemy%enemies.length]} dealDamageToPlayer={dealDamageToPlayer} started={started} />
 </div>
 
 <style type="text/scss">
