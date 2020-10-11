@@ -1,5 +1,26 @@
 <script lang="ts">
-    export let enemy:Enemy;
+    import { onMount, onDestroy } from 'svelte';
+    import type { EnemyModel } from '../../utils/models';
+    
+    export let enemy:EnemyModel;
+    export let dealDamageToPlayer:Function;
+    let interval;
+
+    onMount(():void => {
+        interval = setInterval(enemyMana, 200);
+    });
+
+    function enemyMana(){
+        enemy.currentMana++;
+        if(enemy.currentMana >= enemy.mana) {
+            enemy.currentMana = 0;
+            dealDamageToPlayer();
+        }
+    }
+
+    onDestroy(():void => {
+        clearInterval(interval);
+    });
 </script>
 
 <div class="container">
@@ -14,11 +35,11 @@
             </div>
         </div>
         <div class="mana">
-            <span>MP: {enemy.time}/{enemy.time}</span>
+            <span>MP: {enemy.currentMana}/{enemy.mana}</span>
             <div class="progress-container">
                 <div class="progress-placeholder" />
-                <div class="progress" style="width: {enemy.time/enemy.time*100}%;" />
-                <span class="progress-text">{(enemy.time/enemy.time*100).toFixed(2)}%</span>
+                <div class="progress" style="width: {enemy.currentMana/enemy.mana*100}%;" />
+                <span class="progress-text">{(enemy.currentMana/enemy.mana*100).toFixed(2)}%</span>
             </div>
         </div>
     </div>

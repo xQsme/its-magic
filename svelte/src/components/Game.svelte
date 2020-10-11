@@ -19,11 +19,11 @@
         {name: '5', image: 'assets/images/spell5.png'},
     ];
     const enemies:EnemyModel[] = [
-        {name: 'Goblin', hp: 200, currentHP: 200, time: 20, image: 'assets/images/goblin.png'},
-        {name: 'Dwarf', hp: 350, currentHP: 350, time: 30, image: 'assets/images/dwarf.png'},
-        {name: 'Dragon', hp: 500, currentHP: 500, time: 40, image: 'assets/images/dragon.png'},
-        {name: 'Gilgamesh', hp: 750, currentHP: 750, time: 50, image: 'assets/images/Almighty_Gilgamesh.gif'},
-        {name: 'Altes Besta', hp: 1000, currentHP: 1000, time: 60, image: 'assets/images/Altes_Besta.png'},
+        {name: 'Goblin', hp: 200, currentHP: 200, mana: 40, currentMana: 0, damage: 50, time: 20, image: 'assets/images/goblin.png'},
+        {name: 'Dwarf', hp: 350, currentHP: 350, mana: 40, currentMana: 0, damage: 100, time: 30, image: 'assets/images/dwarf.png'},
+        {name: 'Dragon', hp: 500, currentHP: 500, mana: 60, currentMana: 0, damage: 150, time: 40, image: 'assets/images/dragon.png'},
+        {name: 'Gilgamesh', hp: 750, currentHP: 750, mana: 75, currentMana: 0, damage: 250, time: 50, image: 'assets/images/Almighty_Gilgamesh.gif'},
+        {name: 'Altes Besta', hp: 1000, currentHP: 1000, mana: 80, currentMana: 0, damage: 350, time: 60, image: 'assets/images/Altes_Besta.png'},
     ];
     const colors:string[] = ['red', 'white', 'green', 'blue', 'yellow'];
     const player:PlayerModel = {name: 'Altes Besta', hp: 1000, currentHP: 1000, mana: 100, currentMana: 0};
@@ -63,6 +63,13 @@
         });
     });
 
+    function dealDamageToPlayer() {
+        player.currentHP -= enemies[currentEnemy%enemies.length].damage;
+        if(player.currentHP < 0) {
+            player.currentHP = 0;
+        }
+    }
+
     function submitSpell(spell){
         axios.post('/spell', {
             spell: spell,
@@ -76,23 +83,28 @@
         });        
         
 
-        if(enemies[currentEnemy%enemies.length].currentHP <= 100) {
+        enemies[currentEnemy%enemies.length].currentHP -= 100;
+        if(enemies[currentEnemy%enemies.length].currentHP <= 0) {
             enemies[currentEnemy%enemies.length].currentHP = 0;
             setTimeout(() => {
                 changeEnemy();
             }, 500);
-        } else {
-            enemies[currentEnemy%enemies.length].currentHP -= 100;
         }
-        if(player.currentMana <= player.mana - 10) {
-            player.currentMana += 10;
-        } else {
+        player.currentMana += 10;
+        if(player.currentMana >= player.mana) {   
             player.currentMana = player.mana;
         }
     }
 
     function special() {
         player.currentMana=0;
+        enemies[currentEnemy%enemies.length].currentHP -= 250;
+        if(enemies[currentEnemy%enemies.length].currentHP <= 0) {
+            enemies[currentEnemy%enemies.length].currentHP = 0;
+            setTimeout(() => {
+                changeEnemy();
+            }, 500);
+        }
     }
 
     function playSound(file) {
@@ -109,7 +121,7 @@
 <div id="game">
     <Player player={player}/>
     <Paper bind:rMousePress bind:currentColor colors={colors} bind:currentSpell spells={spells} submitSpell={submitSpell} player={player} special={special} />
-    <Enemy enemy={enemies[currentEnemy%enemies.length]}/>
+    <Enemy enemy={enemies[currentEnemy%enemies.length]} dealDamageToPlayer={dealDamageToPlayer}/>
 </div>
 
 <style type="text/scss">

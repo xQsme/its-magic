@@ -9,6 +9,9 @@ export interface EnemyModel{
     name:string,
     hp:number,
     currentHP:number,
+    mana:number,
+    currentMana:number,
+    damage:number,
     time:number,
     image:string,
 }
