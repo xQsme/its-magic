@@ -4,12 +4,11 @@ import { auth } from './stores';
 import { get } from 'svelte/store';
 
 export const setupReqRes = () => {
-    const token = get(auth).token;
-    console.log(token);
     axios.interceptors.request.use(
         reqConfig => {
             const newConfig = reqConfig;
-
+            const token = get(auth).token;
+            console.log(token);
             if (token) {
                 newConfig.headers.Authorization = `Bearer ${token}`;
             }
