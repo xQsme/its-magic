@@ -1,16 +1,77 @@
 <script lang="ts">
-    import { auth } from '../utils/stores';
+    import { auth } from '../utils/stores.js';
+    import { get } from 'svelte/store';
+    import axios from "axios";
+    import router from 'page';
+
+    let username:string[];
+    let password:string[];
+    let loginError = false;
+
+    function login(e) {
+        e.preventDefault();
+        axios({
+            method: 'post',
+            url: 'http://localhost:8000/api-token-auth/',
+            headers: {
+                'Content-Type' : 'application/json'
+            },
+            data: {
+                username: username,
+                password: password
+            }
+        }).then(response=>{
+            auth.set(response.data.user);
+           
+            auth.update(auth =>  { 
+                // copy auth and adds token
+                var newAuth = Object.assign({}, auth);
+                //newAuth.role = "ADMIN";
+                newAuth.token = response.data.token;
+                return newAuth;
+            });
+            console.log("User successfully logged in")
+            console.log(get(auth))
+            router.redirect('/');
+            //console.log(get(auth).role)
+            //console.log(get(auth).token)
+        })
+        .catch(error=>{
+            console.log(error.response);
+            loginError = true;
+        });
+    }
 </script>
 
-<div class="login-container">
-    <h1>Login</h1>
-    <a href="/"><button on:click={() => auth.set({email: 'altesbesta@mail.com', username: 'Altes Besta', role: 'ADMIN', token: 'JWT'})}>Admin</button></a>
-    <a href="/"><button on:click={() => auth.set({email: 'Yvtq8K3n@mail.com', username: 'Yvtq8K3n', role: 'USER', token: 'JWT'})}>User</button></a>
+<div class="register-page">
+    <div class="form" >
+        <h1>Login</h1>
+        <form class="login-form" on:submit={login} >
+            <input bind:value={username} type="text" placeholder="Username" class="input-form" name="username" id="username" required/>
+            <input bind:value={password} type="password" placeholder="Password" class="input-form" name="password" id="password" required/>
+            <button class="formSubmit">Login</button>
+        </form>
+    </div>
 </div>
 
-<style lang="scss">
-    .login-container{
+<style lang="css">
+    .input-form{
+        display: block;
         text-align: center;
-        width: 100%;
+        margin-top: 1.5em;
+        margin-bottom: 1.5em;
+    }
+    .register-page{
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .formSubmit{
+        text-decoration: none;
+        background-color: #28a745;
+        border-color: #28a745;
+        color: #fff;
+        text-align: center;
+        border-radius: .5em;
     }
 </style>

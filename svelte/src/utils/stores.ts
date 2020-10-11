@@ -1,5 +1,6 @@
 import { writable } from 'svelte/store';
 import type { AuthModel } from './models';
+import { get } from 'svelte/store';
 
 let authData:AuthModel;
 
@@ -9,6 +10,6 @@ try{
 	authData = null;
 }
 
-export const auth = writable(authData === null ? {email: null, username: null, role: null, token: null} : authData);
+export const auth = writable(authData === null ? null : authData);
 
 auth.subscribe(val => localStorage.setItem("auth", JSON.stringify(val)));

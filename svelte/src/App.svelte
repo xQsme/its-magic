@@ -9,9 +9,10 @@
 	import { auth } from './utils/stores.js';
 	import { beforeUpdate } from 'svelte';
 	import { get } from 'svelte/store';
-	let role = get(auth).role;
 	export let page;
 	export let params;
+	
+	let role;
 
 	router('/login', () => page = Login);
 	router('/register', () => page = Register);
@@ -41,19 +42,19 @@
 	router.start();
 
 	function authMiddleware () {
-		if(get(auth).role === null) {
+		if(get(auth) === null) {
 			router.redirect('/login');
 		}
 	}
-
+	
 	function adminMiddleware() {
-		if(get(auth).role !== 'ADMIN') {
+		if(get(auth) === null && get(auth).role.includes("ADMIN")) {
 			router.redirect('/');
 		}
 	}
 
 	beforeUpdate(() => {
-		role = get(auth).role;
+		role = get(auth) ? get(auth).role : null;
 	});
 
 </script>
@@ -65,7 +66,7 @@
 			<span class="logo-text">It's Magic</span>
 		</a>
 		<div class="pages">
-			{#if role === 'ADMIN'}
+			{#if role!= null && role.includes("ADMIN")}
 				<a href="/enemies" class:active={page === Enemies}>Enemies</a>
 				<a href="/spells" class:active={page === Spells}>Spells</a>
 				<a href="/colors" class:active={page === Colors}>Colors</a>
@@ -75,7 +76,7 @@
 				<a href="/register" class:active={page === Register}>Register</a>
 			{/if}
 			{#if role !== null}
-				<a href="/" on:click={evt => auth.set({email: null, username: null, role: null, token: null})}>Logout</a>
+				<a href="/" on:click={evt => auth.set(null)}>Logout</a>
 			{/if}
 		</div>
 	</nav>

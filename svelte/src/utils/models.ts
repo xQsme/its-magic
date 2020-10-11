@@ -1,8 +1,8 @@
 export interface AuthModel {
 	email:string,
 	username:string,
-	role:string,
-	token:string,
+	role:string[],
+    token:string,
 }
 
 export interface EnemyModel{
