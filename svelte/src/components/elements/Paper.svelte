@@ -15,7 +15,6 @@
     export let changing:boolean;
     export let started:boolean;
     export let lost:boolean;
-    console.log(restartGame);
 
     onMount(():void => {
         paper.setup("paper");

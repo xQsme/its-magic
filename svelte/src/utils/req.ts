@@ -8,7 +8,6 @@ export const setupReqRes = () => {
         reqConfig => {
             const newConfig = reqConfig;
             const token = get(auth).token;
-            console.log(token);
             if (token) {
                 newConfig.headers.Authorization = `Bearer ${token}`;
             }

@@ -1,18 +1,18 @@
 <script lang="ts">
     import { auth } from '../utils/stores.js';
-    import { get } from 'svelte/store';
     import axios from "axios";
     import router from 'page';
+    import { url } from '../utils/server.js';
 
-    let username:string[];
-    let password:string[];
+    let username:string = '';
+    let password:string = '';
     let loginError = false;
 
     function login(e) {
         e.preventDefault();
         axios({
             method: 'post',
-            url: 'http://localhost:8000/api-token-auth/',
+            url: url + '/api-token-auth/',
             headers: {
                 'Content-Type' : 'application/json'
             },
@@ -21,6 +21,7 @@
                 password: password
             }
         }).then(response=>{
+            console.log(response);
             auth.set(response.data.user);
            
             auth.update(auth =>  { 
@@ -30,11 +31,7 @@
                 newAuth.token = response.data.token;
                 return newAuth;
             });
-            console.log("User successfully logged in")
-            console.log(get(auth))
             router.redirect('/');
-            //console.log(get(auth).role)
-            //console.log(get(auth).token)
         })
         .catch(error=>{
             console.log(error.response);

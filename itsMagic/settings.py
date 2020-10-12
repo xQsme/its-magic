@@ -45,7 +45,11 @@ JWT_AUTH = {
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    'localhost',
+]
+CORS_ORIGIN_ALLOW_ALL = True
 
 
 # Application definition
@@ -59,7 +63,10 @@ INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
     'tastypie',
-    'api',
+    'drf_yasg',
+    'spell',
+    'enemy',
+    'color',
 ]
 
 MIDDLEWARE = [
@@ -150,3 +157,9 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'svelte/public'),)
 
 STATICFILES_STORAGE = 'spa.storage.SPAStaticFilesStorage'
+
+SWAGGER_SETTINGS = {
+    'PERSIST_AUTH': True,
+    'REFETCH_SCHEMA_WITH_AUTH': True,
+    'REFETCH_SCHEMA_ON_LOGOUT': True,
+}

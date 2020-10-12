@@ -3,5 +3,7 @@ Pillow
 django-tastypie
 django-spa
 djangorestframework-jwt
-djangorestframework
+djangorestframework==3.11.2
 whitenoise
+drf-yasg
+packaging
