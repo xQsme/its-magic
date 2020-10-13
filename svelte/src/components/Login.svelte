@@ -3,6 +3,7 @@
     import axios from "axios";
     import router from 'page';
     import { url } from '../utils/server.js';
+import type { AuthModel } from '../utils/models.js';
 
     let username:string = '';
     let password:string = '';
@@ -10,6 +11,7 @@
 
     function login(e) {
         e.preventDefault();
+        console.log(url + '/api-token-auth/');
         axios({
             method: 'post',
             url: url + '/api-token-auth/',
@@ -21,10 +23,10 @@
                 password: password
             }
         }).then(response=>{
-            console.log(response);
+            // console.log(response);
             auth.set(response.data.user);
            
-            auth.update(auth =>  { 
+            auth.update((auth:AuthModel) =>  { 
                 // copy auth and adds token
                 var newAuth = Object.assign({}, auth);
                 //newAuth.role = "ADMIN";
@@ -34,7 +36,7 @@
             router.redirect('/');
         })
         .catch(error=>{
-            console.log(error.response);
+            //console.log(error);
             loginError = true;
         });
     }
