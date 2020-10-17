@@ -87,7 +87,7 @@
     function submitSpell(spell){
         axios({
             method: 'post',
-            url: url + '/spell',
+            url: url + 'spell',
             headers: {
                 'Content-Type' : 'application/json',
             },

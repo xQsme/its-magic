@@ -11,10 +11,9 @@ import type { AuthModel } from '../utils/models.js';
 
     function login(e) {
         e.preventDefault();
-        console.log(url + '/api-token-auth/');
         axios({
             method: 'post',
-            url: url + '/api-token-auth/',
+            url: url + 'api-token-auth/',
             headers: {
                 'Content-Type' : 'application/json'
             },
