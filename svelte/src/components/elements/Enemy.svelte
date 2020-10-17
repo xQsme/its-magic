@@ -21,6 +21,10 @@
         }
     }
 
+    function spellActivation(){
+        console.log("hihihisahdiashidoahsid")
+    }
+
     onDestroy(():void => {
         clearInterval(interval);
     });
@@ -45,14 +49,47 @@
                 <span class="progress-text">{(enemy.currentMana/enemy.mana*100).toFixed(2)}%</span>
             </div>
         </div>
+        <!-- The text to be moved -->
+        <p>Save time with TIMESAVER 2.2</p>
     </div>
     <div class="enemy-container">
         <img class="enemy" src={enemy.image} alt="enemy"/>
     </div> 
 </div>
-     
+
 <style lang="scss">
+    #theText {position: absolute; left: 100px; top: 100px;
+              font: bold 1.7em 'Times Roman';
+              color: red;}
+    /* Configure the animation for the element to be animated. */
+    p {
+        position: absolute;
+        animation: 5s infinite;
+        animation-name: slidein;
+    }
+
+    /* Declare the animation. In this case, we indicate the property
+    values we want at certain percentage points within the animation. */
+    @keyframes slidein {
+        0% {
+            margin-left: 0%;
+            width: 300%; 
+        }
+
+        50% {
+            //margin-left: 90%;
+            margin-top:50px; /* You can push the element up/down with this. */
+            color:red;
+        }
+        
+        100% {
+            margin-left: 0%;
+            width: 300%; 
+        }  
+    }    
+
     .container{
+        position: relative;
         display: flex;
         background-color: #303030;
         flex-direction: column;
@@ -61,6 +98,7 @@
 
         h1{
             text-align: center;
+            margin: 0;
         }
 
         .health{
@@ -111,8 +149,8 @@
         .enemy-container{
             display: flex;
             justify-content: center;
-            align-items: center;      
-            height: 100%;  
+            align-items: flex-end;      
+            height: 100%;
             
             .enemy{
                 max-width: 20vw;

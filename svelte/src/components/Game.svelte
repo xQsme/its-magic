@@ -1,5 +1,6 @@
 <script lang="ts">
     import axios from "axios";
+    import { createEventDispatcher } from 'svelte'
     import { onMount, onDestroy } from 'svelte';
     import {Howl} from 'howler';
     import Paper from './elements/Paper.svelte';
@@ -8,6 +9,8 @@
 
     import type { EnemyModel, SpellModel, PlayerModel } from '../utils/models';
     import { url } from '../utils/server';
+
+    
     
     let rMousePress:boolean = false;
     let changing:boolean = false;
@@ -16,6 +19,8 @@
     export let currentEnemy:number = 0;
     export let currentSpell:number = 0;
     export let currentColor:number = 0;
+
+    const dispatch = createEventDispatcher()
 
     const sounds:Howl[] = [];
     const spells:SpellModel[] = [
@@ -102,8 +107,13 @@
             console.log(error);
             
         });       
+        spellActivation()
+    }
 
-        enemies[currentEnemy%enemies.length].currentHP -= 100;
+    function spellActivation(){
+        dispatch("spellActivation");     
+        
+        /*enemies[currentEnemy%enemies.length].currentHP -= 100;
         if(enemies[currentEnemy%enemies.length].currentHP <= 0) {
             enemies[currentEnemy%enemies.length].currentHP = 0;
             changing = true;
@@ -115,7 +125,7 @@
         player.currentMana += 10;
         if(player.currentMana >= player.mana) {   
             player.currentMana = player.mana;
-        }
+        }*/
     }
 
     function special() {
@@ -143,7 +153,7 @@
 <div id="game">
     <Player player={player}/>
     <Paper bind:rMousePress bind:currentColor colors={colors} bind:currentSpell spells={spells} submitSpell={submitSpell} player={player} special={special} changing={changing} bind:started lost={lost} restartGame={restartGame} />
-    <Enemy enemy={enemies[currentEnemy%enemies.length]} dealDamageToPlayer={dealDamageToPlayer} started={started} />
+    <Enemy enemy={enemies[currentEnemy%enemies.length]} dealDamageToPlayer={dealDamageToPlayer} started={started} on:spellActivation={spellActivation}/>
 </div>
 
 <style type="text/scss">
