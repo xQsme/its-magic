@@ -31,10 +31,15 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
+    ),
+    'DEFAULT_PARSER_CLASSES': (
+        'rest_framework.parsers.FormParser',
+        'rest_framework.parsers.MultiPartParser',
+        'rest_framework.parsers.JSONParser',
     ),
 }
+
+REST_USE_JWT = True
 
 JWT_AUTH = {
     'JWT_SECRET_KEY': SECRET_KEY,
@@ -158,8 +163,25 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, 'svelte/public'),)
 
 STATICFILES_STORAGE = 'spa.storage.SPAStaticFilesStorage'
 
+# AUTH_USER_MODEL = 'auth.User'
+
 SWAGGER_SETTINGS = {
     'PERSIST_AUTH': True,
-    'REFETCH_SCHEMA_WITH_AUTH': True,
-    'REFETCH_SCHEMA_ON_LOGOUT': True,
+    # 'SHOW_REQUEST_HEADERS': True,
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+        }
+    },
+    'USE_SESSION_AUTH': False,
+    # 'JSON_EDITOR': True,
+    # 'SUPPORTED_SUBMIT_METHODS': [
+    #     'get',
+    #     'post',
+    #     'put',
+    #     'delete',
+    #     'patch'
+    # ],
 }
