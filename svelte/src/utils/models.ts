@@ -6,6 +6,7 @@ export interface AuthModel {
 }
 
 export interface EnemyModel{
+    id:number,
     name:string,
     hp:number,
     currentHP:number,
@@ -16,6 +17,7 @@ export interface EnemyModel{
 }
 
 export interface SpellModel{
+    id:number,
     name:string,
     image:string,
 }

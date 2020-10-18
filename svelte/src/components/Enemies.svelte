@@ -6,20 +6,113 @@
 
     let enemies:EnemyModel[] = [];
     let curr:EnemyModel = null;
-    let newEnemy:EnemyModel = {name: '', hp: 0, mana: 0, damage: 0, image: ''};
+    let newEnemy:EnemyModel;
+
+    function resetEnemy() {
+        newEnemy = {name: '', hp: 0, mana: 0, damage: 0, currentHP: 0, currentMana: 0};
+    }
+
+    resetEnemy();
+
+    let files:FileList = null;
     let add=false;
 
     getEnemies();
 
-    async function getEnemies() {
-        let result:any = await axios.get(url + 'enemy');
-        enemies = result.data;
+    function getEnemies() {
+        axios.get(url + 'enemy/').then(result => {
+            enemies = result.data;
+        });
     }
+
+    function handleAdd(evt) {
+        evt.preventDefault();
+        const data = new FormData();
+        for(const key in newEnemy) {
+            data.append(key, newEnemy[key]);
+        }
+        if(files != null) {
+            data.append('image', files[0]);
+        }
+        const headers = {
+            'Content-Type': 'multipart/form-data',
+        }
+        axios.post(url + 'enemy/', data, { headers }).then(r => {
+            add=false;
+            files = null;
+            resetEnemy();
+            getEnemies();
+        }).catch(e => {
+            alert('post error');
+        });
+    }
+
+    function handleEdit(evt) {
+        evt.preventDefault();
+        const data = new FormData();
+        for(const key in curr) {
+            if(key !== 'image') {
+                data.append(key, curr[key]);
+            }
+        }
+        if(files) {
+            data.append('image', files[0]);
+        }
+        const headers = {
+            'accept': 'application/json',
+            'Content-Type': 'multipart/form-data',
+        }
+        axios.put(url + 'enemy/' + curr.id + '/', data, { headers }).then(r => {
+            curr=null;
+            getEnemies();
+        }).catch(e => {
+            alert('put error');
+        });
+    }
+
+    function deleteEnemy(evt, id) {
+        evt.stopPropagation();
+        let r = confirm("Delete?");
+        if (r) {
+            axios.delete(url + 'enemy/' + id).then(r => {
+                getEnemies();
+            }).catch(e => {
+                alert('delete error');
+            })
+        }
+    }
+
 </script>
+
+<DialogOverlay isOpen={curr !== null} onDismiss={() => curr = null}>
+    <DialogContent class="dialog" aria-label="Announcement">
+        <form class="dialog-container" on:submit={handleEdit}>
+            <label for="name">Name:</label>
+            <input bind:value={curr.name} type="text" class="input-form" name="name" required/>
+
+            <label for="hp">HP:</label>
+            <input bind:value={curr.hp} type="number" class="input-form" name="hp" required/>
+
+            <label for="mana">Mana:</label>
+            <input bind:value={curr.mana} type="number" class="input-form" name="mana" required/>
+
+            <label for="damage">Damage:</label>
+            <input bind:value={curr.damage} type="number" class="input-form" name="damage" required/>
+
+            <label for="image">Image:</label>
+            <input bind:files type="file" class="input-form" name="image"/>
+
+            <div class="dialog-buttons">
+                <button>Submit</button>
+                <button on:click={() => curr = null}>Close</button>
+            </div>
+        </form>
+    </DialogContent>
+</DialogOverlay>
 
 <DialogOverlay isOpen={add} onDismiss={() => add = false}>
     <DialogContent class="dialog" aria-label="Announcement">
-        <form class="dialog-container">
+        <form class="dialog-container" on:submit={handleAdd}>
             <label for="name">Name:</label>
             <input bind:value={newEnemy.name} type="text" class="input-form" name="name" required/>
 
@@ -33,7 +126,7 @@
             <input bind:value={newEnemy.damage} type="number" class="input-form" name="damage" required/>
 
             <label for="image">Image:</label>
-            <input bind:value={newEnemy.image} type="file" class="input-form" name="image" required/>
+            <input bind:files type="file" class="input-form" name="image" required/>
 
             <div class="dialog-buttons">
                 <button>Submit</button>
@@ -50,6 +143,7 @@
         </div>
         {#each enemies as enemy}
             <div class="enemy grid-item" on:click={() => curr = enemy}>
+                <i class="material-icons" on:click={evt => deleteEnemy(evt, enemy.id)}>delete</i>
                 <img src={enemy.image} alt="enemy" class="enemy-image" />
                 <p class="label">Name</p>
                 <p class="enemy-name">{enemy.name}</p>
@@ -94,6 +188,16 @@
         margin: auto;
 
         .enemy{
+
+            i{
+                text-align: right;
+                margin-bottom: 10px;
+                transition: color .2s linear;
+            }
+
+            i:hover{
+                color: orangered;
+            }
 
             p{
                 margin: 0;
