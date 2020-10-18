@@ -16,6 +16,7 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.urls import path
 from django.contrib import admin
+from itsMagic.views import auth_test, free_test
 from rest_framework_jwt.views import obtain_jwt_token
 from rest_framework_jwt.views import refresh_jwt_token
 from rest_framework import permissions
@@ -36,6 +37,8 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
+    url('test/', auth_test),
+    url('test1/',free_test),
     url(r'^admin/', admin.site.urls),
     path('spell/', include('spell.urls')),
     path('enemy/', include('enemy.urls')),

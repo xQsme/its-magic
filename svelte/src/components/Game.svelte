@@ -90,7 +90,7 @@
     }
 
     function submitSpell(spell){
-        axios({
+        /*axios({
             method: 'post',
             url: url + 'spell',
             headers: {
@@ -106,12 +106,12 @@
         .catch(error=>{
             console.log(error);
             
-        });       
+        });*/       
         spellActivation()
     }
 
     function spellActivation(){
-        dispatch("spellActivation");     
+        dispatch("activation");     
         
         /*enemies[currentEnemy%enemies.length].currentHP -= 100;
         if(enemies[currentEnemy%enemies.length].currentHP <= 0) {
@@ -153,7 +153,7 @@
 <div id="game">
     <Player player={player}/>
     <Paper bind:rMousePress bind:currentColor colors={colors} bind:currentSpell spells={spells} submitSpell={submitSpell} player={player} special={special} changing={changing} bind:started lost={lost} restartGame={restartGame} />
-    <Enemy enemy={enemies[currentEnemy%enemies.length]} dealDamageToPlayer={dealDamageToPlayer} started={started} on:spellActivation={spellActivation}/>
+    <Enemy enemy={enemies[currentEnemy%enemies.length]} dealDamageToPlayer={dealDamageToPlayer} started={started} on:activation={() => (console.log("fine i will close myself"))}/>
 </div>
 
 <style type="text/scss">
