@@ -5,4 +5,4 @@ from .models import Spell
 class SpellSerializer(serializers.ModelSerializer):
     class Meta:
         model = Spell
-        fields = ('name', 'damage', 'image', 'colors')
+        fields = ('id', 'name', 'damage', 'image', 'colors')

@@ -5,4 +5,4 @@ from .models import Enemy
 class EnemySerializer(serializers.ModelSerializer):
     class Meta:
         model = Enemy
-        fields = ('name', 'hp', 'image')
+        fields = ('id', 'name', 'hp', 'currentHP', 'mana', 'currentMana', 'damage', 'image')
