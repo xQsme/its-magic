@@ -50,7 +50,11 @@
             </div>
         </div>
         <!-- The text to be moved -->
-        <p>Save time with TIMESAVER 2.2</p>
+        <p id="theText">300</p>
+        <p id="theText" style="right: 20%">300</p>
+        <p id="theText" style="right: 30%">300</p>
+        <p id="theText" style="right: 20%">300</p>
+        <p id="theText" style="right: 50%">300</p>
     </div>
     <div class="enemy-container">
         <img class="enemy" src={enemy.image} alt="enemy"/>
@@ -58,7 +62,7 @@
 </div>
 
 <style lang="scss">
-    #theText {position: absolute; left: 100px; top: 100px;
+    #theText {position: absolute;;
               font: bold 1.7em 'Times Roman';
               color: red;}
     /* Configure the animation for the element to be animated. */
@@ -72,19 +76,11 @@
     values we want at certain percentage points within the animation. */
     @keyframes slidein {
         0% {
-            margin-left: 0%;
-            width: 300%; 
+            bottom: 30%
         }
 
-        50% {
-            //margin-left: 90%;
-            margin-top:50px; /* You can push the element up/down with this. */
-            color:red;
-        }
-        
         100% {
-            margin-left: 0%;
-            width: 300%; 
+            bottom: 70%;
         }  
     }    
 
