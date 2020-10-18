@@ -19,7 +19,15 @@ export interface EnemyModel{
 export interface SpellModel{
     id:number,
     name:string,
+    damage:number,
     image:string,
+    colors:ColorModel[],
+}
+
+export interface ColorModel{
+    id:number,
+    name:string,
+    hexa:string,
 }
 
 export interface PlayerModel{

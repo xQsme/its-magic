@@ -167,6 +167,7 @@
                 height: 20px;
                 border-radius: 50%;
                 margin: 5px;
+                cursor: pointer;
             }
             .active{
                 box-shadow: 0px 0px 10px #FFF;
