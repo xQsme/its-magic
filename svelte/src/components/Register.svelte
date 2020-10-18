@@ -6,7 +6,8 @@
     let password:string[];
     let confirmPassword:string[];
 
-    function createUser() {
+    function createUser(e) {
+      e.preventDefault();
 		if(password != confirmPassword){
             alert("Password and confirm password doesnt match")
         }else{
@@ -20,14 +21,14 @@
 <div class="register-page">
     <div class="form">
         <h1>Register</h1>
-      <form class="register-form">
+      <form class="register-form" on:submit={createUser}>
         <input bind:value={firstName} type="text" placeholder="First Name" class="input-form" name="firstname" id="firstname" required/>
         <input bind:value={lastName} type="text" placeholder="Last Name" class="input-form" name="lastname" id="lastname" required/>
         <input bind:value={username} type="text" placeholder="Username" class="input-form" name="username" id="username" required/>
         <input bind:value={email} type="email" placeholder="Email Address" class="input-form" required/>
         <input bind:value={password} type="password" placeholder="Password" class="input-form" name="password" id="password" required/>
         <input bind:value={confirmPassword} type="password" placeholder="Confirm Password" class="input-form" name="confirmpassword" id="confirmpassword" required/>
-        <button on:click={createUser} class="formSubmit">create</button>
+        <button type="submit" class="formSubmit">create</button>
       </form>
     </div>
   </div>
