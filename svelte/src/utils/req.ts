@@ -18,4 +18,14 @@ export const setupReqRes = () => {
         },
         err => Promise.reject(err),
     );
+
+    axios.interceptors.response.use(response => {
+        return response;
+    }, err => {
+        console.log(err.response);
+        if (err.response && err.response.status === 401 && err.response.data.detail === 'Signature has expired.') {
+            auth.set(null);
+        }
+        return Promise.reject(err);
+    });
 };

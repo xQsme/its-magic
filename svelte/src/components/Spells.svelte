@@ -23,7 +23,6 @@
     function getSpells() {
         axios.get(url + 'spell/').then(result => {
             spells = result.data;
-            console.log(spells)
         });
     }
 
@@ -105,6 +104,19 @@
             <label for="image">Image:</label>
             <input bind:files type="file" class="input-form" name="image"/>
 
+            <div class="colors">
+                {#each colors as color}
+                    <div class="color" class:active={curr.colors.includes(color)} style="background-color: {color.hexa};" on:click={() => {
+                        if(curr.colors.includes(color)){
+                            curr.colors.splice(curr.colors.indexOf(color), 1);
+                        } else {
+                            curr.colors.push(color);
+                        }
+                        curr = curr;
+                    }}/>
+                {/each}
+            </div>
+
             <div class="dialog-buttons">
                 <button>Submit</button>
                 <button on:click={() => curr = null}>Close</button>
@@ -128,7 +140,6 @@
             <div class="colors">
                 {#each colors as color}
                     <div class="color" class:active={newSpell.colors.includes(color)} style="background-color: {color.hexa};" on:click={() => {
-                        console.log(newSpell)
                         if(newSpell.colors.includes(color)){
                             newSpell.colors.splice(newSpell.colors.indexOf(color), 1);
                         } else {

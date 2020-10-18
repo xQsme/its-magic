@@ -50,7 +50,7 @@
 	}
 	
 	function adminMiddleware() {
-		if(get(auth) === null && get(auth).role.includes("ADMIN")) {
+		if(get(auth) === null || !get(auth).role.includes("ADMIN")) {
 			router.redirect('/');
 		}
 	}
