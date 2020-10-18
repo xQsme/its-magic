@@ -195,6 +195,9 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, 'svelte/public'),)
 
 STATICFILES_STORAGE = 'spa.storage.SPAStaticFilesStorage'
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 # AUTH_USER_MODEL = 'auth.User'
 
 SWAGGER_SETTINGS = {
