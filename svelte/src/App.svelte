@@ -61,6 +61,12 @@
 
 </script>
 
+
+<svelte:head>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<link rel="stylesheet" href="assets/styles/app.css">
+
+</svelte:head>
 <main>
 	<nav class="nav-bar">
 		<a href="/" class="logo">

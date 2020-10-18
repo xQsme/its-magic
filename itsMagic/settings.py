@@ -67,9 +67,9 @@ JWT_AUTH = {
     'JWT_PRIVATE_KEY': None,
     'JWT_ALGORITHM': 'HS256',
     'JWT_VERIFY': True,
-    'JWT_VERIFY_EXPIRATION': True,
+    # 'JWT_VERIFY_EXPIRATION': True,
     'JWT_LEEWAY': 0,
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=300),
+    # 'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=300),
     'JWT_AUDIENCE': None,
     'JWT_ISSUER': None,
 
@@ -196,6 +196,9 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'svelte/public'),)
 
 STATICFILES_STORAGE = 'spa.storage.SPAStaticFilesStorage'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # AUTH_USER_MODEL = 'auth.User'
 

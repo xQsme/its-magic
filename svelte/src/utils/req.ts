@@ -10,9 +10,8 @@ export const setupReqRes = () => {
             const newConfig = reqConfig;
             const authObject:AuthModel = get(auth);
             const token = authObject ? authObject.token : null;
-            console.log(token);
             if (token) {
-                newConfig.headers.Authorization = `Bearer ${token}`;
+                newConfig.headers.Authorization = `JWT ${token}`;
             }
 
             return newConfig;
