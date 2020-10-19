@@ -109,11 +109,11 @@
 
             <div class="colors">
                 {#each colors as color}
-                    <div class="color" class:active={curr.colors.includes(color)} style="background-color: {color.hexa};" on:click={() => {
-                        if(curr.colors.includes(color)){
-                            curr.colors.splice(curr.colors.indexOf(color), 1);
+                    <div class="color" class:active={curr.colors.includes(color.id)} style="background-color: {color.hexa};" on:click={() => {
+                        if(curr.colors.includes(color.id)){
+                            curr.colors.splice(curr.colors.indexOf(color.id), 1);
                         } else {
-                            curr.colors.push(color);
+                            curr.colors.push(color.id);
                         }
                         curr = curr;
                     }}/>
@@ -167,7 +167,12 @@
             <i class="material-icons">add_circle</i>
         </div>
         {#each spells as spell}
-            <div class="enemy grid-item" on:click={() => curr = spell}>
+            <div class="enemy grid-item" on:click={() => {
+                curr = spell
+                curr.colors = curr.colors.map(c => {
+                    return c.id;
+                })
+            }}>
                 <i class="material-icons" on:click={evt => deleteSpell(evt, spell.id)}>delete</i>
                 <img src={spell.image} alt="enemy" class="enemy-image" />
                 <p class="label">Name</p>
