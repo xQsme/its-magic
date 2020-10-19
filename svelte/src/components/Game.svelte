@@ -110,7 +110,7 @@
             console.log(error);
             
         });*/       
-        spellActivation()
+        spellActivation();
     }
 
     function spellActivation(){

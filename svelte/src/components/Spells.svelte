@@ -37,10 +37,10 @@
 
     function handleAdd(evt) {
         evt.preventDefault();
+        console.log(newSpell)
         const data = new FormData();
         for(const key in newSpell) {
-            //data.append(key, JSON.stringify(key === 'colors' ? newSpell[key][0] : newSpell[key]));
-            data.append(key, JSON.stringify(newSpell[key]));
+            data.append(key, newSpell[key]);
         }
         if(files != null) {
             data.append('image', files[0]);
@@ -149,7 +149,6 @@
                             newSpell.colors.push(color.id);
                         }
                         newSpell = newSpell;
-                        console.log(newSpell);
                     }}/>
                 {/each}
             </div>
