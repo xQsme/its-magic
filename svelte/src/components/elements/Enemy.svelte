@@ -1,11 +1,12 @@
 <script lang="ts">
-    import { onMount, onDestroy } from 'svelte';
+    import { onMount, onDestroy, beforeUpdate } from 'svelte';
     import type { EnemyModel } from '../../utils/models';
     
     export let enemy:EnemyModel;
     export let dealDamageToPlayer:Function;
     let interval;
     export let started:boolean;
+    export let damage:any[];
 
     onMount(():void => {
         interval = setInterval(enemyMana, 200);
@@ -28,6 +29,11 @@
     onDestroy(():void => {
         clearInterval(interval);
     });
+
+    beforeUpdate(() => {
+		damage=damage;
+	});
+
 </script>
 
 <div class="container">
@@ -49,38 +55,37 @@
                 <span class="progress-text">{(enemy.currentMana/enemy.mana*100).toFixed(2)}%</span>
             </div>
         </div>
-        <!-- The text to be moved -->
-        <p id="theText">300</p>
-        <p id="theText" style="right: 20%">300</p>
-        <p id="theText" style="right: 30%">300</p>
-        <p id="theText" style="right: 20%">300</p>
-        <p id="theText" style="right: 50%">300</p>
     </div>
     <div class="enemy-container">
+        {#each damage as d (d.random)}
+            <span class="damage" style="margin-right: {d.random}%">{d.value}</span>
+        {/each}
         <img class="enemy" src={enemy.image} alt="enemy"/>
     </div> 
 </div>
 
 <style lang="scss">
-    #theText {position: absolute;;
-              font: bold 1.7em 'Times Roman';
-              color: red;}
-    /* Configure the animation for the element to be animated. */
-    p {
+    .damage {
+        font: bold 1.7em 'Times Roman';
         position: absolute;
-        animation: 5s infinite;
-        animation-name: slidein;
+        animation: 2s;
+        animation-fill-mode: forwards;
+        animation-name: slideup;
+        right: 0;
     }
+    /* Configure the animation for the element to be animated. */
 
     /* Declare the animation. In this case, we indicate the property
     values we want at certain percentage points within the animation. */
-    @keyframes slidein {
+    @keyframes slideup {
         0% {
-            bottom: 30%
+            top: 50%;
+            color: white;
         }
 
         100% {
-            bottom: 70%;
+            top: 20px;
+            color: red;
         }  
     }    
 
@@ -143,6 +148,7 @@
         }
 
         .enemy-container{
+            position: relative;
             display: flex;
             justify-content: center;
             align-items: center;      

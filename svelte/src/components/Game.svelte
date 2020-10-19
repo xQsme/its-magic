@@ -17,8 +17,7 @@
     export let currentEnemy:number = 0;
     export let currentSpell:number = 0;
     export let currentColor:number = 0;
-
-    const dispatch = createEventDispatcher()
+    export let enemyDamage:any[] = [];
 
     const sounds:Howl[] = [];
     let spells:SpellModel[] = [];
@@ -36,7 +35,6 @@
                 }
             }
             enemies = result.data;
-        console.log(enemies);
         });
         axios.get(url + 'color/').then(result => {
             colors = result.data;
@@ -48,9 +46,15 @@
         currentColor=0;
         currentEnemy=0;
         currentSpell=0;
+        if(enemies.length > 0) {
+            playSound(enemies[currentEnemy%enemies.length].sound);
+        }
     }
 
     function changeEnemy():void {
+        sounds.forEach(sound => {
+            sound.stop();
+        });
         enemies[currentEnemy%enemies.length].currentHP=enemies[currentEnemy%enemies.length].hp;
         currentEnemy++;
         playSound(enemies[currentEnemy%enemies.length].sound);
@@ -110,9 +114,10 @@
     }
 
     function spellActivation(){
-        dispatch("activation");     
-        
-        /*enemies[currentEnemy%enemies.length].currentHP -= 100;
+        const damage = {value: 100, random: Math.random()*90};
+        enemyDamage.push(damage);
+        setTimeout(() => enemyDamage.splice(enemyDamage.indexOf(damage), 1), 2000);
+        enemies[currentEnemy%enemies.length].currentHP -= 100;
         if(enemies[currentEnemy%enemies.length].currentHP <= 0) {
             enemies[currentEnemy%enemies.length].currentHP = 0;
             changing = true;
@@ -124,7 +129,7 @@
         player.currentMana += 10;
         if(player.currentMana >= player.mana) {   
             player.currentMana = player.mana;
-        }*/
+        }
     }
 
     function special() {
@@ -153,7 +158,7 @@
     {#if enemies.length > 0 && colors.length > 0 && spells.length > 0}
         <Player player={player}/>
         <Paper bind:rMousePress bind:currentColor colors={colors} bind:currentSpell spells={spells} submitSpell={submitSpell} player={player} special={special} changing={changing} bind:started lost={lost} restartGame={restartGame} />
-        <Enemy enemy={enemies[currentEnemy%enemies.length]} dealDamageToPlayer={dealDamageToPlayer} started={started} on:activation={() => (console.log("fine i will close myself"))}/>
+        <Enemy damage={enemyDamage} enemy={enemies[currentEnemy%enemies.length]} dealDamageToPlayer={dealDamageToPlayer} started={started} on:activation={() => (console.log("fine i will close myself"))}/>
     {:else}
         <h1>Not enough assets to run the game, please contact an administrator.</h1>
     {/if}

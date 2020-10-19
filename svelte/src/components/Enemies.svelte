@@ -15,6 +15,7 @@
     resetEnemy();
 
     let files:FileList = null;
+    let sounds:FileList = null;
     let add=false;
 
     getEnemies();
@@ -34,12 +35,16 @@
         if(files != null) {
             data.append('image', files[0]);
         }
+        if(sounds != null) {
+            data.append('sound', sounds[0]);
+        }
         const headers = {
             'Content-Type': 'multipart/form-data',
         }
         axios.post(url + 'enemy/', data, { headers }).then(r => {
             add=false;
             files = null;
+            sounds = null;
             resetEnemy();
             getEnemies();
         }).catch(e => {
@@ -55,8 +60,12 @@
                 data.append(key, curr[key]);
             }
         }
+        console.log(sounds);
         if(files) {
             data.append('image', files[0]);
+        }
+        if(sounds != null) {
+            data.append('sound', sounds[0]);
         }
         const headers = {
             'accept': 'application/json',
@@ -64,6 +73,8 @@
         }
         axios.put(url + 'enemy/' + curr.id + '/', data, { headers }).then(r => {
             curr=null;
+            files = null;
+            sounds = null;
             getEnemies();
         }).catch(e => {
             alert('put error');
@@ -102,6 +113,9 @@
             <label for="image">Image:</label>
             <input bind:files type="file" class="input-form" name="image"/>
 
+            <label for="sound">Sound:</label>
+            <input bind:files={sounds} type="file" class="input-form" name="sound"/>
+
             <div class="dialog-buttons">
                 <button>Submit</button>
                 <button on:click={() => curr = null}>Close</button>
@@ -127,6 +141,9 @@
 
             <label for="image">Image:</label>
             <input bind:files type="file" class="input-form" name="image" required/>
+
+            <label for="sound">Sound:</label>
+            <input bind:files={sounds} type="file" class="input-form" name="sound"/>
 
             <div class="dialog-buttons">
                 <button>Submit</button>
