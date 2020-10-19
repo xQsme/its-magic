@@ -7,10 +7,8 @@
     import Player from './elements/Player.svelte';
     import Enemy from './elements/Enemy.svelte';
 
-    import type { EnemyModel, SpellModel, PlayerModel } from '../utils/models';
+    import type { EnemyModel, SpellModel, PlayerModel, ColorModel } from '../utils/models';
     import { url } from '../utils/server';
-
-    
     
     let rMousePress:boolean = false;
     let changing:boolean = false;
@@ -23,26 +21,29 @@
     const dispatch = createEventDispatcher()
 
     const sounds:Howl[] = [];
-    const spells:SpellModel[] = [
-        {name: '1', image: 'assets/images/spell1.png'},
-        {name: '2', image: 'assets/images/spell2.png'},
-        {name: '3', image: 'assets/images/spell3.png'},
-        {name: '4', image: 'assets/images/spell4.png'},
-        {name: '5', image: 'assets/images/spell5.png'},
-    ];
+    let spells:SpellModel[] = [];
     let enemies:EnemyModel[] = [];
-    const colors:string[] = ['red', 'white', 'green', 'blue', 'yellow'];
+    let colors:ColorModel[] = [];
     let player:PlayerModel;
     restartGame();
 
     function restartGame() {
-        enemies = [
-            {name: 'Goblin', hp: 200, currentHP: 200, mana: 40, currentMana: 0, damage: 50, image: 'assets/images/goblin.png'},
-            {name: 'Dwarf', hp: 350, currentHP: 350, mana: 40, currentMana: 0, damage: 100, image: 'assets/images/dwarf.png'},
-            {name: 'Dragon', hp: 500, currentHP: 500, mana: 60, currentMana: 0, damage: 150, image: 'assets/images/dragon.png'},
-            {name: 'Gilgamesh', hp: 750, currentHP: 750, mana: 75, currentMana: 0, damage: 250, image: 'assets/images/Almighty_Gilgamesh.gif'},
-            {name: 'Altes Besta', hp: 1000, currentHP: 1000, mana: 80, currentMana: 0, damage: 9991, image: 'assets/images/Altes_Besta.png'},
-        ];
+        axios.get(url + 'enemy/').then(result => {
+            for(let i = 0; i < result.data.length; i++) {
+                result.data[i].currentHP = result.data[i].hp;
+                if(result.data[i].mana == 0) {
+                    result.data[i].mana = 10;
+                }
+            }
+            enemies = result.data;
+        console.log(enemies);
+        });
+        axios.get(url + 'color/').then(result => {
+            colors = result.data;
+        });
+        axios.get(url + 'spell/').then(result => {
+            spells = result.data;
+        });
         player = {name: 'Altes Besta', hp: 1000, currentHP: 1000, mana: 100, currentMana: 0};
         currentColor=0;
         currentEnemy=0;
@@ -52,9 +53,7 @@
     function changeEnemy():void {
         enemies[currentEnemy%enemies.length].currentHP=enemies[currentEnemy%enemies.length].hp;
         currentEnemy++;
-        if(currentEnemy%enemies.length === 4) {
-            playSound('tuturu');
-        }
+        playSound(enemies[currentEnemy%enemies.length].sound);
     }
 
     //Disable right click
@@ -141,7 +140,7 @@
 
     function playSound(file) {
         var sound:any = new Howl({
-            src: ['assets/sounds/' + file + '.mp3']
+            src: [file]
         });
         sounds.push(sound);
         sound.on('end', () => {
@@ -151,9 +150,13 @@
     }
 </script>
 <div id="game">
-    <Player player={player}/>
-    <Paper bind:rMousePress bind:currentColor colors={colors} bind:currentSpell spells={spells} submitSpell={submitSpell} player={player} special={special} changing={changing} bind:started lost={lost} restartGame={restartGame} />
-    <Enemy enemy={enemies[currentEnemy%enemies.length]} dealDamageToPlayer={dealDamageToPlayer} started={started} on:activation={() => (console.log("fine i will close myself"))}/>
+    {#if enemies.length > 0 && colors.length > 0 && spells.length > 0}
+        <Player player={player}/>
+        <Paper bind:rMousePress bind:currentColor colors={colors} bind:currentSpell spells={spells} submitSpell={submitSpell} player={player} special={special} changing={changing} bind:started lost={lost} restartGame={restartGame} />
+        <Enemy enemy={enemies[currentEnemy%enemies.length]} dealDamageToPlayer={dealDamageToPlayer} started={started} on:activation={() => (console.log("fine i will close myself"))}/>
+    {:else}
+        <h1>Not enough assets to run the game, please contact an administrator.</h1>
+    {/if}
 </div>
 
 <style type="text/scss">
@@ -162,6 +165,11 @@
         height: calc(100% - 30px);
         display: flex;
         margin: 15px 0;
+
+        h1{
+            text-align: center;
+            width: 100%;
+        }
     }
     #game:first-child{
         margin-left: 15px;

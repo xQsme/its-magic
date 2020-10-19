@@ -1,11 +1,11 @@
 <script lang="ts">
     import { onMount } from 'svelte';
     import paper from 'paper';
-    import type { PlayerModel, SpellModel } from '../../utils/models';
+    import type { ColorModel, PlayerModel, SpellModel } from '../../utils/models';
 
     export let currentColor:number;
     export let currentSpell:number;
-    export let colors:string[];
+    export let colors:ColorModel[];
     export let spells:SpellModel[];
     let spellCooldown:number = 250;
     export let submitSpell:Function;
@@ -30,7 +30,7 @@
             } else {
                 if (!disable && !changing){
                     myPath = new paper.Path({
-                        strokeColor: colors[currentColor%colors.length],
+                        strokeColor: colors[currentColor%colors.length].hexa,
                         strokeWidth: 20,
                         strokeCap: 'round'
                     });
@@ -80,7 +80,7 @@
         <div class="right-div">
             <div class="colors">
                 {#each colors as color, i}
-                    <div class="color" class:active={currentColor === Number(i)} style="background-color: {color};" on:click={() => currentColor = Number(i)}/>
+                    <div class="color" class:active={currentColor === Number(i)} style="background-color: {color.hexa};" on:click={() => currentColor = Number(i)}/>
                 {/each}
             </div>
             <div class="wrap">

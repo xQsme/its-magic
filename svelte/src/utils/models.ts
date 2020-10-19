@@ -14,6 +14,7 @@ export interface EnemyModel{
     currentMana:number,
     damage:number,
     image:string,
+    sound:string,
 }
 
 export interface SpellModel{

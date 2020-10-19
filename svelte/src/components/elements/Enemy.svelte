@@ -145,8 +145,9 @@
         .enemy-container{
             display: flex;
             justify-content: center;
-            height: 100%;
-            
+            align-items: center;      
+            height: 100%;  
+
             .enemy{
                 max-width: 20vw;
             }

@@ -37,16 +37,17 @@
 
     function handleAdd(evt) {
         evt.preventDefault();
-        //newSpell.colors = newSpell.colors.join(',');
         const data = new FormData();
         for(const key in newSpell) {
-            data.append(key, newSpell[key]);
+            //data.append(key, JSON.stringify(key === 'colors' ? newSpell[key][0] : newSpell[key]));
+            data.append(key, JSON.stringify(newSpell[key]));
         }
         if(files != null) {
             data.append('image', files[0]);
         }
         const headers = {
-            'Content-Type': 'application/x-www-form-urlencoded',
+            'accept': 'application/json',
+            'Content-Type': 'multipart/form-data',
         }
         axios.post(url + 'spell/', data, { headers }).then(r => {
             add=false;
