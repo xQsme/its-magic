@@ -3,6 +3,7 @@ import axios from 'axios';
 import { auth } from './stores';
 import { get } from 'svelte/store';
 import type { AuthModel } from './models';
+import router from 'page';
 
 export const setupReqRes = () => {
     axios.interceptors.request.use(
@@ -25,6 +26,7 @@ export const setupReqRes = () => {
         console.log(err.response);
         if (err.response && err.response.status === 401 && err.response.data.detail === 'Signature has expired.') {
             auth.set(null);
+            router.redirect('/');
         }
         return Promise.reject(err);
     });

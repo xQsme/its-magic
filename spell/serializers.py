@@ -5,7 +5,7 @@ from color.serializers import ColorSerializer
 from color.models import Color
 
 class SpellSerializer(serializers.ModelSerializer):
-    colors = serializers.PrimaryKeyRelatedField(many=True,read_only=False,queryset=Color.objects.all())
+    colors = ColorSerializer(many=True)
     class Meta:
         model = Spell
         fields = ('id', 'name', 'damage', 'image', 'colors')

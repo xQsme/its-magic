@@ -9,7 +9,7 @@
     let newColor:ColorModel = null;
     
     function resetColor() {
-        newColor = {name: '', hexa: ''};
+        newColor = {name: '', hexa: '#FFFFFF'};
     }
 
     resetColor();
@@ -66,6 +66,10 @@
             })
         }
     }
+
+    function openColorPicker(input) {
+        document.getElementById(input).click();
+    }
 </script>
 
 <DialogOverlay isOpen={curr !== null} onDismiss={() => curr = null}>
@@ -75,7 +79,12 @@
             <input bind:value={curr.name} type="text" class="input-form" name="name" required/>
 
             <label for="hexa">Color:</label>
-            <input bind:value={curr.hexa} type="text" class="input-form" name="hexa" required/>
+            <input bind:value={curr.hexa} type="color" id="edit-color" class="input-form color-input" name="hexa" required/>
+
+            <div class="preview-container" on:click={() => openColorPicker('edit-color')}>
+                <span>{curr.hexa}</span>
+                <div class="color-preview" style="background-color: {curr.hexa}" />
+            </div>
 
             <div class="dialog-buttons">
                 <button>Submit</button>
@@ -92,7 +101,12 @@
             <input bind:value={newColor.name} type="text" class="input-form" name="name" required/>
 
             <label for="hexa">Color:</label>
-            <input bind:value={newColor.hexa} type="text" class="input-form" name="hexa" required/>
+            <input bind:value={newColor.hexa} type="color" id="add-color" class="input-form color-input" name="hexa" required/>
+
+            <div class="preview-container" on:click={() => openColorPicker('add-color')}>
+                <span>{newColor.hexa}</span>
+                <div class="color-preview" style="background-color: {newColor.hexa}" />
+            </div>
 
             <div class="dialog-buttons">
                 <button>Submit</button>
@@ -213,4 +227,22 @@
             padding-top: 100%;
         }
     }
+
+    .preview-container{
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+
+        .color-preview{
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-left: 10px;
+        }
+    }
+
+    .color-input{
+        display: none;
+    }
+
 </style>

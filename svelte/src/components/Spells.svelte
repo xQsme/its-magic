@@ -23,6 +23,7 @@
     function getSpells() {
         axios.get(url + 'spell/').then(result => {
             spells = result.data;
+            console.log(spells);
         });
     }
 
@@ -36,6 +37,7 @@
 
     function handleAdd(evt) {
         evt.preventDefault();
+        //newSpell.colors = newSpell.colors.join(',');
         const data = new FormData();
         for(const key in newSpell) {
             data.append(key, newSpell[key]);
@@ -139,12 +141,14 @@
 
             <div class="colors">
                 {#each colors as color}
-                    <div class="color" class:active={newSpell.colors.includes(color)} style="background-color: {color.hexa};" on:click={() => {
-                        if(newSpell.colors.includes(color)){
-                            newSpell.colors.splice(newSpell.colors.indexOf(color), 1);
+                    <div class="color" class:active={newSpell.colors.includes(color.id)} style="background-color: {color.hexa};" on:click={() => {
+                        if(newSpell.colors.includes(color.id)){
+                            newSpell.colors.splice(newSpell.colors.indexOf(color.id), 1);
                         } else {
-                            newSpell.colors.push(color);
+                            newSpell.colors.push(color.id);
                         }
+                        newSpell = newSpell;
+                        console.log(newSpell);
                     }}/>
                 {/each}
             </div>
