@@ -1,6 +1,5 @@
 <script lang="ts">
     import axios from "axios";
-    import { createEventDispatcher } from 'svelte'
     import { onMount, onDestroy } from 'svelte';
     import {Howl} from 'howler';
     import Paper from './elements/Paper.svelte';
