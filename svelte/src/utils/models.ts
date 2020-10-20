@@ -52,6 +52,7 @@ export interface UserModel{
     username:string,
     email:string,
     groups:GroupModel[],
+    password:string,
 }
 
 export interface GroupModel{
