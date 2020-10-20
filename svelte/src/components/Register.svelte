@@ -1,19 +1,40 @@
 <script lang="ts">
-    let firstName:string[];
-    let lastName:string[];
-    let username:string[];
-    let email:string[];
-    let password:string[];
-    let confirmPassword:string[];
+    import axios from 'axios';
+    import { url } from '../utils/server';
+
+    let firstName:string;
+    let lastName:string;
+    let username:string;
+    let email:string;
+    let password:string;
+    let confirmPassword:string;
+
+    function resetUser(){
+      firstName = '';
+      lastName = '';
+      username = '';
+      email = '';
+      password = '';
+      confirmPassword = '';
+    }
 
     function createUser(e) {
       e.preventDefault();
-		if(password != confirmPassword){
-            alert("Password and confirm password doesnt match")
-        }else{
-            //TODO
-            //register
-        }
+      const data = new FormData();
+      data.append("first_name", firstName);
+      data.append("last_name", lastName);
+      data.append("username", username);
+      data.append("email", email);
+      data.append("password", password);
+		  if(password != confirmPassword){
+        alert("Password and confirm password doesnt match")
+      }else{
+        axios.post(url + 'user/', data).then(r => {
+            resetUser();
+        }).catch(e => {
+            alert('post error');
+        });
+      }
 	}
     
 </script>
