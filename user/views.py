@@ -39,12 +39,14 @@ class UseDetail(generics.RetrieveUpdateDestroyAPIView):
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
 
-        groupID = request.data['Group']
-        group = Group.objects.get(id=groupID)
+        groups = request.data['groups'].split(',')
+        groups = [int(i, base=16) for i in groups]
 
         user = User.objects.filter(id=request.data['id'])[0]
 
-        user.groups.add(group)
+        for group in groups:
+            userGroup = Group.objects.get(id=group)
+            user.groups.add(userGroup)
         user.save()
 
         if getattr(instance, '_prefetched_objects_cache', None):
