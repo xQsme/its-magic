@@ -4,13 +4,16 @@
     export let player:PlayerModel;
     export let damage:any[];
     export let xp:any[];
+    export let levelUp:boolean;
 
     beforeUpdate(() => {
         damage=damage;
         xp=xp;
+        levelUp=levelUp;
 	});
 </script>
 
+        <div class="gradient"></div>
 <div class="player-container">
     <h1>{player.name}</h1>
     <div class="stats">
@@ -46,6 +49,9 @@
         {#each xp as x (x.random)}
             <span class="xp-float" style="margin-right: {x.random}%">{x.value}</span>
         {/each}
+        {#if levelUp}
+            <h1 class="level">LEVEL UP!</h1>
+        {/if}
         <img class="player" src={player.image} alt="besta"/>
     </div>
 </div>
@@ -91,6 +97,46 @@
             top: 20px;
             color: #fdfd96;
         }  
+    }
+
+    .level{
+        position: absolute;
+        color:  #fdfd96;
+        top: 20px;
+
+        font: 600 2.5em/1 "Oswald", sans-serif;
+        letter-spacing: 0;
+        padding: .25em 0 .325em;
+        display: block;
+        margin: 0 auto;
+
+    /* Clip Background Image */
+
+        background: url('../assets/images/gradient.png') repeat-y;
+        -webkit-background-clip: text;
+        background-clip: text;
+
+    /* Animate Background Image */
+
+        -webkit-text-fill-color: transparent;
+        -webkit-animation: aitf 10s linear infinite;
+
+    /* Activate hardware acceleration for smoother animations */
+
+        -webkit-transform: translate3d(0,0,0);
+        -webkit-backface-visibility: hidden;
+
+    }
+
+    /* Animate Background Image */
+
+    @-webkit-keyframes aitf {
+        0% { 
+            background-position: 0% 50%;
+        }
+        100% { 
+            background-position: 100% 50%;
+         }
     }    
 
     .player-container{

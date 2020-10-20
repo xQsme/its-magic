@@ -24,7 +24,7 @@
         let wasDisabled: boolean = false;
 
         paper.view.onMouseDown = function(event:any):void {
-            wasDisabled = disable;
+            wasDisabled = disable || changing;
         	if (rMousePress) {
                 myPath.remove();
             } else {
@@ -40,7 +40,7 @@
         }
         
         paper.view.onMouseDrag = function(event:any):void {
-            if (!disable) {
+            if (!disable && !changing) {
                 myPath.add(event.point);
             }
         }
