@@ -18,6 +18,7 @@
     export let currentSpell:number = 0;
     export let currentColor:number = 0;
     export let enemyDamage:any[] = [];
+    export let playerDamage:any[] = [];
 
     const sounds:Howl[] = [];
     let spells:SpellModel[] = [];
@@ -30,7 +31,7 @@
         axios.get(url + 'enemy/').then(result => {
             for(let i = 0; i < result.data.length; i++) {
                 result.data[i].currentHP = result.data[i].hp;
-                if(result.data[i].mana == 0) {
+                if(result.data[i].mana <= 0) {
                     result.data[i].mana = 10;
                 }
             }
@@ -84,6 +85,9 @@
     });
 
     function dealDamageToPlayer() {
+        const damage = {value: enemies[currentEnemy%enemies.length].damage, random: Math.random()*90};
+        playerDamage.push(damage);
+        setTimeout(() => playerDamage.splice(playerDamage.indexOf(damage), 1), 2000);
         player.currentHP -= enemies[currentEnemy%enemies.length].damage;
         if(player.currentHP <= 0) {
             player.currentHP = 0;
@@ -133,6 +137,9 @@
     }
 
     function special() {
+        const damage = {value: 250, random: Math.random()*90};
+        enemyDamage.push(damage);
+        setTimeout(() => enemyDamage.splice(enemyDamage.indexOf(damage), 1), 2000);
         player.currentMana=0;
         enemies[currentEnemy%enemies.length].currentHP -= 250;
         if(enemies[currentEnemy%enemies.length].currentHP <= 0) {
@@ -156,7 +163,7 @@
 </script>
 <div id="game">
     {#if enemies.length > 0 && colors.length > 0 && spells.length > 0}
-        <Player player={player}/>
+        <Player damage={playerDamage} player={player}/>
         <Paper bind:rMousePress bind:currentColor colors={colors} bind:currentSpell spells={spells} submitSpell={submitSpell} player={player} special={special} changing={changing} bind:started lost={lost} restartGame={restartGame} />
         <Enemy damage={enemyDamage} enemy={enemies[currentEnemy%enemies.length]} dealDamageToPlayer={dealDamageToPlayer} started={started} on:activation={() => (console.log("fine i will close myself"))}/>
     {:else}

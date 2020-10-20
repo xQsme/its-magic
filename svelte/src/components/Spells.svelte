@@ -23,7 +23,6 @@
     function getSpells() {
         axios.get(url + 'spell/').then(result => {
             spells = result.data;
-            console.log(spells);
         });
     }
 
@@ -37,7 +36,6 @@
 
     function handleAdd(evt) {
         evt.preventDefault();
-        console.log(newSpell)
         const data = new FormData();
         for(const key in newSpell) {
             data.append(key, newSpell[key]);

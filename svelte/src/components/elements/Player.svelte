@@ -1,6 +1,12 @@
 <script lang="ts">
     import type { PlayerModel } from "../../utils/models";
+    import { beforeUpdate } from 'svelte';
     export let player:PlayerModel;
+    export let damage:any[];
+
+    beforeUpdate(() => {
+		damage=damage;
+	});
 </script>
 
 <div class="player-container">
@@ -24,11 +30,35 @@
         </div>
     </div>
     <div class="image-container">
+        {#each damage as d (d.random)}
+            <span class="damage" style="margin-right: {d.random}%">{d.value}</span>
+        {/each}
         <img class="player" src="assets/images/besta.png" alt="besta"/>
     </div>
 </div>
 
 <style lang="scss">
+    .damage {
+        font: bold 1.7em 'Times Roman';
+        position: absolute;
+        animation: 2s;
+        animation-fill-mode: forwards;
+        animation-name: slideup;
+        right: 0;
+    }
+    
+    @keyframes slideup {
+        0% {
+            top: 50%;
+            color: white;
+        }
+
+        100% {
+            top: 20px;
+            color: red;
+        }  
+    }  
+
     .player-container{
         display: flex;
         background-color: #303030;
@@ -87,6 +117,7 @@
         }
 
         .image-container{
+            position: relative;
             display: flex;
             justify-content: center;
             align-items: center;      

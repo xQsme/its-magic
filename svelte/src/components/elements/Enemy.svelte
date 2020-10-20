@@ -73,10 +73,7 @@
         animation-name: slideup;
         right: 0;
     }
-    /* Configure the animation for the element to be animated. */
-
-    /* Declare the animation. In this case, we indicate the property
-    values we want at certain percentage points within the animation. */
+    
     @keyframes slideup {
         0% {
             top: 50%;

@@ -30,12 +30,14 @@
         evt.preventDefault();
         const data = new FormData();
         for(const key in newEnemy) {
-            data.append(key, newEnemy[key]);
+            if(key !== 'sound' && key !== 'image') {
+                data.append(key, newEnemy[key]);
+            }
         }
-        if(files != null) {
+        if(files !== null) {
             data.append('image', files[0]);
         }
-        if(sounds != null) {
+        if(sounds !== null) {
             data.append('sound', sounds[0]);
         }
         const headers = {
@@ -56,15 +58,14 @@
         evt.preventDefault();
         const data = new FormData();
         for(const key in curr) {
-            if(key !== 'image') {
+            if(key !== 'sound' && key !== 'image') {
                 data.append(key, curr[key]);
             }
         }
-        console.log(sounds);
-        if(files) {
+        if(files !== null) {
             data.append('image', files[0]);
         }
-        if(sounds != null) {
+        if(sounds !== null) {
             data.append('sound', sounds[0]);
         }
         const headers = {
