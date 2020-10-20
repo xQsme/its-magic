@@ -43,11 +43,14 @@ class UseDetail(generics.RetrieveUpdateDestroyAPIView):
         groups = [int(i, base=16) for i in groups]
 
         user = User.objects.filter(id=request.data['id'])[0]
+        user.groups.clear()
 
         for group in groups:
             userGroup = Group.objects.get(id=group)
             user.groups.add(userGroup)
         user.save()
+
+        
 
         if getattr(instance, '_prefetched_objects_cache', None):
             # If 'prefetch_related' has been applied to a queryset, we need to
