@@ -44,3 +44,17 @@ export interface PlayerModel{
     image:string,
     sound:string,
 }
+
+export interface UserModel{
+    id:number,
+    first_name:string,
+    last_name:string,
+    username:string,
+    email:string,
+    groups:GroupModel[],
+}
+
+export interface GroupModel{
+    id:number,
+    name:string,
+}
