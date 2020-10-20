@@ -106,6 +106,7 @@ INSTALLED_APPS = [
     'spell',
     'enemy',
     'color',
+    'player',
 ]
 
 MIDDLEWARE = [

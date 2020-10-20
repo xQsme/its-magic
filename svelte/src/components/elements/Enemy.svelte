@@ -82,7 +82,7 @@
 
         100% {
             top: 20px;
-            color: red;
+            color: #ff392e;
         }  
     }    
 
@@ -100,11 +100,11 @@
         }
 
         .health{
-            color: red;
+            color: #ff392e;
             margin-bottom: 10px;
 
             .progress{
-                background-color: red;
+                background-color: #ff392e;
             }
         }
 

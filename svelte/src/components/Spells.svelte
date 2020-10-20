@@ -105,6 +105,7 @@
             <label for="image">Image:</label>
             <input bind:files type="file" class="input-form" name="image"/>
 
+            <label for="colors">Colors:</label>
             <div class="colors">
                 {#each colors as color}
                     <div class="color" class:active={curr.colors.includes(color.id)} style="background-color: {color.hexa};" on:click={() => {
@@ -138,6 +139,7 @@
             <label for="image">Image:</label>
             <input bind:files type="file" class="input-form" name="image" required/>
 
+            <label for="colors">Colors:</label>
             <div class="colors">
                 {#each colors as color}
                     <div class="color" class:active={newSpell.colors.includes(color.id)} style="background-color: {color.hexa};" on:click={() => {
@@ -177,6 +179,7 @@
                 <p class="enemy-name">{spell.name}</p>
                 <p class="label">Damage</p>
                 <p class="enemy-name">{spell.damage}</p>
+                <p class="label">Colors</p>
                 <div class="colors">
                     {#each spell.colors as color}
                         <div class="color" style="background-color: {color.hexa};" />

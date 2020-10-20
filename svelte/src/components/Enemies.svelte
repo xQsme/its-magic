@@ -9,7 +9,7 @@
     let newEnemy:EnemyModel;
 
     function resetEnemy() {
-        newEnemy = {name: '', hp: 0, mana: 0, damage: 0, currentHP: 0, currentMana: 0};
+        newEnemy = {name: '', xp: 0, hp: 0, mana: 0, damage: 0, currentHP: 0, currentMana: 0};
     }
 
     resetEnemy();
@@ -102,6 +102,9 @@
             <label for="name">Name:</label>
             <input bind:value={curr.name} type="text" class="input-form" name="name" required/>
 
+            <label for="xp">XP:</label>
+            <input bind:value={curr.xp} type="number" class="input-form" name="xp" required/>
+
             <label for="hp">HP:</label>
             <input bind:value={curr.hp} type="number" class="input-form" name="hp" required/>
 
@@ -130,6 +133,9 @@
         <form class="dialog-container" on:submit={handleAdd}>
             <label for="name">Name:</label>
             <input bind:value={newEnemy.name} type="text" class="input-form" name="name" required/>
+
+            <label for="xp">XP:</label>
+            <input bind:value={newEnemy.xp} type="number" class="input-form" name="xp" required/>
 
             <label for="hp">HP:</label>
             <input bind:value={newEnemy.hp} type="number" class="input-form" name="hp" required/>
@@ -165,6 +171,8 @@
                 <img src={enemy.image} alt="enemy" class="enemy-image" />
                 <p class="label">Name</p>
                 <p class="enemy-name">{enemy.name}</p>
+                <p class="label">XP</p>
+                <p class="enemy-health">{enemy.xp}</p>
                 <p class="label">HP</p>
                 <p class="enemy-health">{enemy.hp}</p>
                 <p class="label">Mana</p>

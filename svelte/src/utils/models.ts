@@ -8,6 +8,7 @@ export interface AuthModel {
 export interface EnemyModel{
     id:number,
     name:string,
+    xp:number,
     hp:number,
     currentHP:number,
     mana:number,
@@ -32,9 +33,14 @@ export interface ColorModel{
 }
 
 export interface PlayerModel{
+    id:number,
     name:string,
+    xp:number,
+    currentXP:number,
     hp:number,
     currentHP:number,
     mana:number,
     currentMana:number,
+    image:string,
+    sound:string,
 }

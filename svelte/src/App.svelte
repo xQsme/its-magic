@@ -26,10 +26,16 @@
 		page = Game
 	});
 
+	router('/players', () => {
+		adminMiddleware();
+		page = Player
+	});
+
 	router('/enemies', () => {
 		adminMiddleware();
 		page = Enemies
 	});
+
 	router('/spells', () => {
 		adminMiddleware();
 		page = Spells
@@ -37,6 +43,11 @@
 	router('/colors', () => {
 		adminMiddleware();
 		page = Colors
+	});
+
+	router('/users', () => {
+		adminMiddleware();
+		page = Users
 	});
 
 	router('/*', () => {
@@ -77,7 +88,7 @@
 		</a>
 		<div class="pages">
 			{#if role!= null && role.includes("ADMIN")}
-				<a href="/player" class:active={page === Player}>Player</a>
+				<a href="/players" class:active={page === Player}>Players</a>
 				<a href="/enemies" class:active={page === Enemies}>Enemies</a>
 				<a href="/spells" class:active={page === Spells}>Spells</a>
 				<a href="/colors" class:active={page === Colors}>Colors</a>

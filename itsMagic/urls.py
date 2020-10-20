@@ -45,6 +45,7 @@ urlpatterns = [
     path('spell/', include('spell.urls')),
     path('enemy/', include('enemy.urls')),
     path('color/', include('color.urls')),
+    path('player/', include('player.urls')),
     # url(r'^api/', include(spell_resource.urls)),
     # url(r'^api/', include(enemy_resource.urls)),
     # url(r'^api/', include(color_resource.urls)),

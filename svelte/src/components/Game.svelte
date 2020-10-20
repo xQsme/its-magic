@@ -16,13 +16,16 @@
     export let currentEnemy:number = 0;
     export let currentSpell:number = 0;
     export let currentColor:number = 0;
+    export let currentXP:number = 0;
     export let enemyDamage:any[] = [];
     export let playerDamage:any[] = [];
+    export let playerXP:any[] = [];
 
     const sounds:Howl[] = [];
     let spells:SpellModel[] = [];
     let enemies:EnemyModel[] = [];
     let colors:ColorModel[] = [];
+    let players:PlayerModel[] = [];
     let player:PlayerModel;
     restartGame();
 
@@ -42,12 +45,24 @@
         axios.get(url + 'spell/').then(result => {
             spells = result.data;
         });
-        player = {name: 'Altes Besta', hp: 1000, currentHP: 1000, mana: 100, currentMana: 0};
+        axios.get(url + 'player/').then(result => {
+            for(let i = 0; i < result.data.length; i++) {
+                result.data[i].currentHP = result.data[i].hp;
+                if(result.data[i].mana <= 0) {
+                    result.data[i].mana = 10;
+                }
+            }
+            players = result.data;
+            player = players[0];
+        });
         currentColor=0;
         currentEnemy=0;
         currentSpell=0;
         if(enemies.length > 0) {
             playSound(enemies[currentEnemy%enemies.length].sound);
+        }
+        if(players.length > 0) {
+            playSound(players[currentPlayer%players.length].sound);
         }
     }
 
@@ -116,17 +131,39 @@
         spellActivation();
     }
 
+    function shouldChangePlayer() {
+        let sum = 0;
+        let prevSum = 0;
+        players.forEach(p => {
+            sum += p.xp;
+            if(sum > currentXP) {
+                if(player !== p) {
+                    player=p;
+                    player.currentXP = currentXP - prevSum;
+                    playSound(player.sound);
+                }
+                return;
+            }
+            prevSum += p.xp;
+        });
+    }
+
     function spellActivation(){
         const damage = {value: 100, random: Math.random()*90};
         enemyDamage.push(damage);
         setTimeout(() => enemyDamage.splice(enemyDamage.indexOf(damage), 1), 2000);
         enemies[currentEnemy%enemies.length].currentHP -= 100;
         if(enemies[currentEnemy%enemies.length].currentHP <= 0) {
+            const xp = {value: enemies[currentEnemy%enemies.length].xp, random: Math.random()*90};
+            currentXP += xp.value;
+            playerXP.push(xp);
+            setTimeout(() => playerXP.splice(playerXP.indexOf(xp), 1), 3500);
             enemies[currentEnemy%enemies.length].currentHP = 0;
             changing = true;
             setTimeout(() => {
                 changeEnemy();
                 changing=false;
+                shouldChangePlayer();
             }, 500);
         }
         player.currentMana += 10;
@@ -161,8 +198,8 @@
     }
 </script>
 <div id="game">
-    {#if enemies.length > 0 && colors.length > 0 && spells.length > 0}
-        <Player damage={playerDamage} player={player}/>
+    {#if enemies.length > 0 && colors.length > 0 && spells.length > 0 && players.length > 0}
+        <Player damage={playerDamage} xp={playerXP} player={player}/>
         <Paper bind:rMousePress bind:currentColor colors={colors} bind:currentSpell spells={spells} submitSpell={submitSpell} player={player} special={special} changing={changing} bind:started lost={lost} restartGame={restartGame} />
         <Enemy damage={enemyDamage} enemy={enemies[currentEnemy%enemies.length]} dealDamageToPlayer={dealDamageToPlayer} started={started} on:activation={() => (console.log("fine i will close myself"))}/>
     {:else}

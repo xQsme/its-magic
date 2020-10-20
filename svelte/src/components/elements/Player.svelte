@@ -3,9 +3,11 @@
     import { beforeUpdate } from 'svelte';
     export let player:PlayerModel;
     export let damage:any[];
+    export let xp:any[];
 
     beforeUpdate(() => {
-		damage=damage;
+        damage=damage;
+        xp=xp;
 	});
 </script>
 
@@ -28,12 +30,23 @@
                 <span class="progress-text">{(player.currentMana/player.mana*100).toFixed(2)}%</span>
             </div>
         </div>
+        <div class="xp">
+            <span>XP: {player.currentXP}/{player.xp}</span>
+            <div class="progress-container">
+                <div class="progress-placeholder" />
+                <div class="progress" style="width: {player.currentXP/player.xp*100}%;" />
+                <span class="progress-text">{(player.currentXP/player.xp*100).toFixed(2)}%</span>
+            </div>
+        </div>
     </div>
     <div class="image-container">
         {#each damage as d (d.random)}
             <span class="damage" style="margin-right: {d.random}%">{d.value}</span>
         {/each}
-        <img class="player" src="assets/images/besta.png" alt="besta"/>
+        {#each xp as x (x.random)}
+            <span class="xp-float" style="margin-right: {x.random}%">{x.value}</span>
+        {/each}
+        <img class="player" src={player.image} alt="besta"/>
     </div>
 </div>
 
@@ -55,9 +68,30 @@
 
         100% {
             top: 20px;
-            color: red;
+            color: #ff392e;
         }  
-    }  
+    }
+
+    .xp-float {
+        font: bold 1.7em 'Times Roman';
+        position: absolute;
+        animation: 3.5s;
+        animation-fill-mode: forwards;
+        animation-name: slidexp;
+        right: 0;
+    }
+    
+    @keyframes slidexp {
+        0% {
+            top: 50%;
+            color: white;
+        }
+
+        100% {
+            top: 20px;
+            color: #fdfd96;
+        }  
+    }    
 
     .player-container{
         display: flex;
@@ -72,19 +106,29 @@
         }
 
         .health{
-            color: red;
+            color: #ff392e;
             margin-bottom: 10px;
 
             .progress{
-                background-color: red;
+                background-color: #ff392e;
             }
         }
 
         .mana{
             color: cornflowerblue;
+            margin-bottom: 10px;
 
             .progress{
                 background-color: cornflowerblue;
+            }
+        }
+
+        .xp{
+            color: #fdfd96;
+            margin-bottom: 10px;
+
+            .progress{
+                background-color: #fdfd96;
             }
         }
 

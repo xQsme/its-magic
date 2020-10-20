@@ -192,7 +192,7 @@
         letter-spacing: 1.3px;
         font-weight: 700;
         color: #303030;
-        background: linear-gradient(90deg, orangered 0%, red 100%);
+        background: linear-gradient(90deg, orangered 0%, #ff392e 100%);
         border: none;
         border-radius: 1000px;
         transition: all 0.3s ease-in-out 0s;
