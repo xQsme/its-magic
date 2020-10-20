@@ -26,11 +26,7 @@
 
     function handleAdd(evt) {
         evt.preventDefault();
-        const data = new FormData();
-        for(const key in newColor) {
-            data.append(key, newColor[key]);
-        }
-        axios.post(url + 'color/', data).then(r => {
+        axios.post(url + 'color/', newColor).then(r => {
             add=false;
             resetColor();
             getColors();
@@ -41,13 +37,7 @@
 
     function handleEdit(evt) {
         evt.preventDefault();
-        const data = new FormData();
-        for(const key in curr) {
-            if(key !== 'image') {
-                data.append(key, curr[key]);
-            }
-        }
-        axios.put(url + 'color/' + curr.id + '/', data).then(r => {
+        axios.put(url + 'color/' + curr.id + '/', curr).then(r => {
             curr=null;
             getColors();
         }).catch(e => {

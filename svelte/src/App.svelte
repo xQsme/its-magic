@@ -5,6 +5,8 @@
 	import Enemies from './components/Enemies.svelte';
 	import Spells from './components/Spells.svelte';
 	import Colors from './components/Colors.svelte';
+	import Player from './components/Player.svelte';
+	import Users from './components/Users.svelte';
 	import router from 'page';
 	import { auth } from './utils/stores';
 	import { beforeUpdate } from 'svelte';
@@ -75,9 +77,11 @@
 		</a>
 		<div class="pages">
 			{#if role!= null && role.includes("ADMIN")}
+				<a href="/player" class:active={page === Player}>Player</a>
 				<a href="/enemies" class:active={page === Enemies}>Enemies</a>
 				<a href="/spells" class:active={page === Spells}>Spells</a>
 				<a href="/colors" class:active={page === Colors}>Colors</a>
+				<a href="/users" class:active={page === Users}>Users</a>
 			{/if}
 			{#if role === null}
 				<a href="/login" class:active={page === Login}>Login</a>
